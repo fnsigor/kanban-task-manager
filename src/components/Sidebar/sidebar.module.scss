@@ -1,0 +1,83 @@
+@import '../../style/index';
+
+.content {
+    background: $component-gray;
+
+    padding-top: 2rem;
+    width: 25rem;
+
+
+    &>* {
+
+        color: $text-gray;
+    }
+
+
+    div:first-child {
+
+        @include useFlex();
+        justify-content: flex-start;
+
+
+        margin-bottom: 3rem;
+        text-transform: uppercase;
+        padding-left: 2rem;
+
+        svg {
+            margin-right: 10px;
+            color: $purple;
+        }
+    }
+
+    p {
+        margin-bottom: 2rem;
+        padding-left: 2rem;
+
+    }
+
+    ul {
+
+        @include useFlex(column);
+        align-items: start;
+        gap: 1rem;
+
+        width: 90%;
+
+    }
+
+    li {
+        padding-block: 1rem;
+        padding-right: 1rem;
+        border-top-right-radius: 5px;
+        border-bottom-right-radius: 5px;
+
+        padding-left: 2rem;
+        @include useFlex;
+
+        svg {
+            margin-right: 5px;
+            width: 24px;
+            height: 24px;
+        }
+
+        &:hover {
+            background-color: $purple;
+            color: $text-color;
+            cursor: pointer;
+
+        }
+    }
+
+    ul li:last-child {
+        color: $purple;
+
+        &:hover {
+            background-color: initial;
+            color: $text-color;
+
+        }
+    }
+
+
+
+}

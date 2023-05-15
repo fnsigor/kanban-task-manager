@@ -1,0 +1,45 @@
+// ====================ARQUIVO PARA FUNÇÕES SASS E CONFIGURAÇÕES GLOBAIS
+
+
+$dark-bg: #21212d;
+$component-gray: #2c2c38;
+$text-gray: #888fa0;
+$purple: #645fc6;
+$text-color: #fff;
+
+
+
+#app {
+    background-color: $dark-bg;
+    min-height: 100vh;
+    color: $text-color;
+
+    display: flex;
+
+
+    &>div:nth-child(2) {
+        border: 1px solid blue;
+        flex-grow: 1;
+    }
+
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+}
+
+:root{
+    font-size:62.5%
+}
+
+@mixin useFlex($direction: row){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
