@@ -1,0 +1,30 @@
+@import '../../style/index';
+
+.taskContainer{
+
+
+    background-color: $component-gray;
+    border-radius: 10px;
+    padding: 1.5rem 1rem;
+
+    width: 20rem;
+
+}
+
+
+
+.columnContainer{
+
+    h4{
+        margin-bottom: 1rem;
+    }
+
+    ul{
+        @include useFlex(column);
+        justify-content: flex-start;
+        align-items: start;
+        gap: 2rem;
+    }
+
+
+}

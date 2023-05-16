@@ -8,6 +8,13 @@ $purple: #645fc6;
 $text-color: #fff;
 
 
+@mixin useFlex($direction: row){
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
 
 #app {
     background-color: $dark-bg;
@@ -18,8 +25,9 @@ $text-color: #fff;
 
 
     &>div:nth-child(2) {
-        border: 1px solid blue;
         flex-grow: 1;
+        @include useFlex(column);
+        justify-content: space-between;
     }
 
 }
@@ -31,15 +39,11 @@ $text-color: #fff;
     list-style: none;
     box-sizing: border-box;
     text-decoration: none;
+    border: none;
+    background:none;
 }
 
 :root{
     font-size:62.5%
 }
 
-@mixin useFlex($direction: row){
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: $direction;
-}

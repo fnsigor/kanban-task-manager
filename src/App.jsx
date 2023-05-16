@@ -1,4 +1,3 @@
-
 import { useContext, useLayoutEffect, useState } from "react"
 import Content from "./components/Content/Content"
 import Navbar from "./components/Navbar/Navbar"
@@ -6,81 +5,136 @@ import Navbar from "./components/Navbar/Navbar"
 import { UserContext } from "./context/UserContext"
 import './style/index.scss'
 import Sidebar from "./components/Sidebar/Sidebar"
+import { CurrentBoardContext } from "./context/CurrentBoardContext"
 
 function App() {
 
   const [user, setUser] = useState({
     boards: [
       {
-        boardName: 'primeiro board',
+        name: 'primeiro board',
         columns: [
           {
-            columnName: 'To do',
+            name: 'To do',
             tasks: [
               {
-                taskName: 'Criar app',
-                subTasks: [
+                name: 'Criar app',
+                description:'criar um app mto foda',
+                completed:false,
+                subtasks: [
                   {
-                    subTaskName: 'definir layout'
+                    name: 'definir layout',
+                    description: 'construção de layout no figma',
+                    completed:false,
+                  },
+                  {
+                    name: 'outra subtask',
+                    description: 'construção de layout no figma',
+                    completed:true,
+                  },
+                ]
+              },
+              {
+                name: 'Tarefa pra finalizr',
+                description:'teste tarefa finalizar description',
+                completed:false,
+                subtasks: [
+                  {
+                    name: 'teste',
+                    description: '',
+                    completed:false,
                   },
                 ]
               },
             ]
           },
           {
-            columnName: 'Doing',
+            name: 'Doing',
             tasks: [
               {
-                taskName: 'Definir estrutura dos dados',
-                subTasks: []
+                name: 'Definir estrutura dos dados',
+                subtasks: []
               },
               {
-                taskName: 'fazneod tarefa x',
-                subTasks: []
+                name: 'fazneod tarefa x',
+                subtasks: [
+                  {
+                    name: 'teste',
+                    description: '',
+                    completed:false,
+                  },
+                  {
+                    name: 'teste',
+                    description: '',
+                    completed:false,
+                  },
+                  {
+                    name: 'teste',
+                    description: '',
+                    completed:false,
+                  },
+                  {
+                    name: 'teste',
+                    description: '',
+                    completed:false,
+                  },
+                ]
               },
             ]
           },
         ]
       },
       {
-        boardName: 'segundo board',
+        name: 'compras',
         columns: [
           {
-            columnName: 'finanças',
+            name: 'frutas',
             tasks: [
               {
-                taskName: 'Criar app',
-                subTasks: [
+                name: 'maça',
+                subtasks: [
                   {
-                    subTaskName: 'definir layout'
+                    name: 'definir layout'
                   },
+                ]
+              },
+              {
+                name: 'banana',
+                subtasks: [
+                
+                ]
+              },
+              {
+                name: 'pera',
+                subtasks: [
+                
                 ]
               },
             ]
           },
           {
-            columnName: 'comercial',
+            name: 'carnes',
             tasks: [
               {
-                taskName: 'Definir estrutura dos dados',
-                subTasks: []
+                name: 'carne moida',
+                subtasks: []
               },
               {
-                taskName: 'fazneod tarefa x',
-                subTasks: []
+                name: 'picanha',
+                subtasks: []
               },
             ]
           },
           {
-            columnName: 'marketing',
+            name: 'verduras',
             tasks: [
               {
-                taskName: 'Definir estrutura dos dados',
-                subTasks: []
+                name: 'beterraba',
+                subtasks: []
               },
               {
-                taskName: 'fazneod tarefa x',
-                subTasks: []
+                name: 'cenoura',
+                subtasks: []
               },
             ]
           },
@@ -89,18 +143,21 @@ function App() {
     ]
   })
 
+  const [currentBoard, setCurrentBoard] = useState(user.boards[0])
 
 
 
   return (
     <UserContext.Provider value={{ user, setUser }}>
-      <div id="app">
-        <Sidebar />
-        <div>
-          <Navbar />
-          <Content />
+      <CurrentBoardContext.Provider value={{currentBoard, setCurrentBoard}}>
+        <div id="app">
+          <Sidebar />
+          <div>
+            <Navbar />
+            <Content />
+          </div>
         </div>
-      </div>
+      </CurrentBoardContext.Provider>
     </UserContext.Provider>
   )
 }
