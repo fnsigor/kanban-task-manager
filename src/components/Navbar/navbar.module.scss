@@ -12,19 +12,4 @@
     width: 100%;
 
     border-bottom: 1px solid $text-gray;
-
-
-    button{
-        background-color: $purple;
-        border-radius: 20px;
-        padding:1rem 1.5rem;
-        color: $text-color;
-
-        &:hover{
-            cursor: pointer;
-        }
-    }
-
-
-
 }

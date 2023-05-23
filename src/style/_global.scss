@@ -8,11 +8,50 @@ $purple: #645fc6;
 $text-color: #fff;
 
 
-@mixin useFlex($direction: row){
+@mixin useFlex($direction: row) {
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: $direction;
+}
+
+.purpleButton {
+    background-color: $purple;
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    color: $text-color;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+.registerLoginForm {
+    height: 100%;
+    width: 100%;
+
+    @include useFlex(column);
+
+    h2 {
+        font-size: 4rem;
+        margin-bottom: 4rem;
+    }
+
+    form label {
+        @include useFlex(column);
+        align-items: start;
+
+        margin-bottom: 2rem;
+        font-size: 2.6rem;
+    }
+
+
+
+    input {
+        font-size: 2rem;
+        border: 1px solid #ddd;
+        border-radius: 10px;
+        padding: .4rem .6rem;
+        color: #fff;
+    }
 }
 
 
@@ -33,6 +72,15 @@ $text-color: #fff;
 }
 
 
+.shadow {
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    background-color: #00000073;
+    display: none;
+}
+
+
 * {
     margin: 0;
     padding: 0;
@@ -40,10 +88,9 @@ $text-color: #fff;
     box-sizing: border-box;
     text-decoration: none;
     border: none;
-    background:none;
+    background: none;
 }
 
-:root{
-    font-size:62.5%
+:root {
+    font-size: 62.5%
 }
-

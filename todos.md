@@ -5,6 +5,15 @@ MVP
 
 > menu lateral expansivel (mesmo layout desktop e mobile)
 
+> create boards
+
+> change board type
+
+
+
+
+Ordem de features:
+
 
 
 ENTREGA FINAL

@@ -1,19 +1,19 @@
 import React, { useContext } from 'react'
 import { UserContext } from '../../context/UserContext'
-import { CurrentBoardContext } from '../../context/CurrentBoardContext'
+//import { CurrentBoardContext } from '../../context/CurrentBoardContext'
 import style from './sidebar.module.scss'
 
 function Sidebar() {
 
-    const { user} = useContext(UserContext)
+    // const { user} = useContext(UserContext)
 
-    const {setCurrentBoard} = useContext(CurrentBoardContext)
+    // const {setCurrentBoard} = useContext(CurrentBoardContext)
 
-    function useChangeBoard(selectedBoard) {
-        const board = user.boards.filter(board => board.name === selectedBoard)
+    // function useChangeBoard(selectedBoard) {
+    //     const board = user.boards.filter(board => board.name === selectedBoard)
     
-        setCurrentBoard(board[0])
-    }
+    //     setCurrentBoard(board[0])
+    // }
 
 
     return (
@@ -25,10 +25,11 @@ function Sidebar() {
             </div>
 
             <p className='sidebar-board-title'>
-                ALL BOARDS ({user.boards?.length})
+                ALL BOARDS 
+                {/* ({user.boards?.length}) */}
             </p>
             <ul>
-                {
+                {/* {
                     user.boards?.map((board, index) => (
                         <li 
                         className='sidebar-board-title' 
@@ -40,7 +41,7 @@ function Sidebar() {
                         </li>
 
                     ))
-                }
+                } */}
                 <li className='sidebar-board-title' >
                     + Create New Board
                 </li>
