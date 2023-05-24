@@ -1,19 +1,19 @@
-import React from 'react'
+import React, {useRef} from 'react'
 import style from './navbar.module.scss'
 import { Link } from 'react-router-dom'
 import { useAuthValue } from '../../context/AuthContext';
 import { useAuthentication } from '../../hooks/useAuthentication';
+import AddBoard from '../../component popovers/AddBoard/AddBoard';
 
-function Navbar() {
+function Navbar({addBoardPopup}) {
 
     const { user } = useAuthValue();
     const { logout } = useAuthentication();
 
-
     return (
         <nav className={style.content}>
 
-            <h1 className='board-title'>board name</h1>
+            <h1 className='board-title'>{user?.displayName ?? 'Kanban Task Manager'}</h1>
 
             <div>
 
@@ -38,6 +38,7 @@ function Navbar() {
                         </button>
                     </>
                 )}
+
 
 
 

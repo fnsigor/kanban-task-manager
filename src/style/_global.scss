@@ -8,6 +8,18 @@ $purple: #645fc6;
 $text-color: #fff;
 
 
+* {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    background: none;
+}
+
+
+
 @mixin useFlex($direction: row) {
     display: flex;
     justify-content: center;
@@ -15,11 +27,37 @@ $text-color: #fff;
     flex-direction: $direction;
 }
 
+
+
+#app {
+    background-color: $dark-bg;
+    min-height: 100vh;
+    color: $text-color;
+
+    display: flex;
+
+
+    &>div:nth-child(2) {
+        flex-grow: 1;
+        @include useFlex(column);
+        justify-content: space-between;
+    }
+
+}
+
 .purpleButton {
     background-color: $purple;
     border-radius: 20px;
     padding: 1rem 1.5rem;
     color: $text-color;
+    margin-left: 15px;
+    cursor: pointer;
+}
+.whiteButton {
+    background-color: #fff;
+    border-radius: 20px;
+    padding: 1rem 1.5rem;
+    color: #000;
     margin-left: 15px;
     cursor: pointer;
 }
@@ -55,23 +93,6 @@ $text-color: #fff;
 }
 
 
-#app {
-    background-color: $dark-bg;
-    min-height: 100vh;
-    color: $text-color;
-
-    display: flex;
-
-
-    &>div:nth-child(2) {
-        flex-grow: 1;
-        @include useFlex(column);
-        justify-content: space-between;
-    }
-
-}
-
-
 .shadow {
     width: 100vw;
     height: 100vh;
@@ -80,17 +101,59 @@ $text-color: #fff;
     display: none;
 }
 
-
-* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: none;
-    background: none;
+.show{
+    display: block;
 }
+
 
 :root {
     font-size: 62.5%
+}
+
+.popupForm{
+
+    width: 800px;
+
+    position: relative;
+
+    background-color: $component-gray;
+
+    .closePopup{
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        font-size: 1.4rem;
+    }
+
+    h4{
+        font-size: 3rem;
+        margin-bottom: 2rem;
+    }
+
+    form > div{
+        @include useFlex(column);
+        align-items: start;
+        margin-bottom: 2.5rem;
+    }
+
+    label{
+        align-items: start;
+
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    input {
+        font-size: 1.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        padding: .4rem .5rem;
+        color: #fff;
+    }
+
+    .boardColumns div{
+        @include useFlex(row);
+        gap: 1rem;
+        margin-bottom: 1rem;
+    }
 }
