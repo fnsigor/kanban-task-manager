@@ -3,6 +3,7 @@ import { db } from "../../firebase config/database";
 import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore'
 import { useParams } from 'react-router-dom';
 import { useUpdateDocument } from '../../hooks/useUpdateDocument';
+import { getUserBoards } from '../../utils/getBoard';
 
 
 const AddTask = forwardRef(({ userid }, ref) => {
@@ -26,38 +27,15 @@ const AddTask = forwardRef(({ userid }, ref) => {
     const [selectedBoard, setSelectedBoard] = useState(null)
     const [selectedColumn, setSelectedColumn] = useState('')
 
-
     const { updateDocument, response } = useUpdateDocument("boards");
 
-
     const { boardid } = useParams()
-
-    const fetchUserData = (uid) => {
-        const collectionRef = collection(db, 'boards');
-
-
-        const q = query(
-            collectionRef,
-            where('userId', '==', uid),
-            orderBy('createdAt', 'desc')
-        );
-
-        onSnapshot(q, (querySnapshot) => {
-
-            const data = querySnapshot.docs.map((doc) => (
-                { id: doc.id, ...doc.data() }
-            ));
-
-            setSelectedBoard(data.find(board => board.id == boardid))
-
-        });
-    };
 
 
     useEffect(() => {
 
         if (userid) {
-            fetchUserData(userid)
+            getUserBoards(userid, setSelectedBoard, 'one', boardid)
         }
 
     }, [userid, boardid])

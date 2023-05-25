@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { db } from "../../firebase config/database";
 import { collection, query, orderBy, onSnapshot, where, getDocs } from 'firebase/firestore'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments';
+import { getUserBoards } from '../../utils/getBoard';
 
 
 
@@ -13,31 +14,10 @@ function Sidebar({ addBoardPopup, userid }) {
     const [boards, setBoards] = useState([])
 
 
-    const fetchUserData = (uid) => {
-        const collectionRef = collection(db, 'boards');
-
-        const q = query(
-            collectionRef,
-            where('userId', '==', uid),
-            orderBy('createdAt', 'desc')
-        );
-
-        onSnapshot(q, (querySnapshot) => {
-
-            const data = querySnapshot.docs.map((doc) => (
-                { id: doc.id, ...doc.data() }
-            ));
-
-            setBoards(data)
-
-        });
-    };
-
-
     useEffect(() => {
 
         if (userid) {
-            fetchUserData(userid)
+            getUserBoards(userid, setBoards, 'all')
         }
 
     }, [userid])

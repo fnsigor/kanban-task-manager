@@ -6,6 +6,7 @@ import Column from '../../components/Column/Column';
 
 import { doc, getDoc } from 'firebase/firestore'
 import { db } from "../../firebase config/database";
+import { getUserBoards } from '../../utils/getBoard';
 
 function CurrentBoard() {
 
@@ -20,45 +21,15 @@ function CurrentBoard() {
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
-    async function loadDocument() {
-
-        setLoading(true)
-
-
-        try {
-            
-            const docRef = doc(db, 'boards', boardid)
-
-            const docSnap = await getDoc(docRef)
-
-            setSelectedBoard(docSnap.data())
-
-            setLoading(false)
-
-
-        } catch (error) {
-
-            console.log(error)
-            setError(error.message)
-
-
-            setLoading(false)
-        }
-
-
-
-    }
+    
 
     useEffect(() => {
         if (!user) {
             setLoading(true)
         } 
-
-        loadDocument()
-
+        
+        getUserBoards(null, setSelectedBoard, 'one', boardid)
        
-
-
     }, [boardid, selectedBoard])
 
 
