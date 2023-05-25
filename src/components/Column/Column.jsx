@@ -1,5 +1,5 @@
 import React, { useContext } from 'react'
-import { CurrentBoardContext } from '../../context/CurrentBoardContext'
+
 import style from './column.module.scss'
 
 
