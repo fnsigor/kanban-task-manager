@@ -2,64 +2,45 @@ import React, { useEffect, useState } from 'react'
 import style from './sidebar.module.scss'
 import { useNavigate } from 'react-router-dom';
 
-import { db  } from "../../firebase config/database";
+import { db } from "../../firebase config/database";
 import { collection, query, orderBy, onSnapshot, where, getDocs } from 'firebase/firestore'
 import { useFetchDocuments } from '../../hooks/useFetchDocuments';
 
 
 
-function Sidebar({ addBoardPopup, user }) {
-
+function Sidebar({ addBoardPopup, userid }) {
 
     const [boards, setBoards] = useState([])
 
-    async function loadData(uid) {
-    
-  
 
-        const collectionRef = await collection(db, 'boards')
+    const fetchUserData = (uid) => {
+        const collectionRef = collection(db, 'boards');
 
+        const q = query(
+            collectionRef,
+            where('userId', '==', uid),
+            orderBy('createdAt', 'desc')
+        );
 
-        try {
+        onSnapshot(q, (querySnapshot) => {
 
+            const data = querySnapshot.docs.map((doc) => (
+                { id: doc.id, ...doc.data() }
+            ));
 
-            let q
-
-            if (uid) {
-                q = await query(collectionRef,
-                    where('uid', '==', uid),
-                    orderBy('createdAt', 'desc'))
-
-            } else {
-                q = await query(collectionRef, orderBy('createdAt', 'desc'))
-
-            }
-
-
-            await onSnapshot(q, (querySnapshot) => { 
-                console.log(querySnapshot.docs)
-                setBoards(
-                    querySnapshot.docs.map(doc => ({
-                        id: doc.id,
-                        ...doc.data()
-                    }))
-                )
-            })
-
-           
+            setBoards(data)
             
-        } catch (error) {
-            console.log(error);
-            
-        }
-    }
+        });
+    };
+
 
     useEffect(() => {
-        loadData(user?.uid)
 
-       
-    }, []);
+        if (userid) {
+            fetchUserData(userid)
+        }
 
+    }, [userid])
 
 
 
