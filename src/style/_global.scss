@@ -143,12 +143,16 @@ $text-color: #fff;
         font-size: 2rem;
     }
 
-    input {
+    input, textarea {
         font-size: 1.8rem;
         border: 1px solid #ddd;
         border-radius: 5px;
         padding: .4rem .5rem;
         color: #fff;
+    }
+
+    textarea{
+        resize: none;
     }
 
     .boardColumns div{

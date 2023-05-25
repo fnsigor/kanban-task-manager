@@ -29,13 +29,7 @@ function CurrentBoard() {
             
             const docRef = doc(db, 'boards', boardid)
 
-
-            console.log('docRef', docRef)
-
             const docSnap = await getDoc(docRef)
-
-            console.log('docSnap',docSnap)
-            console.log('data:',docSnap.data())
 
             setSelectedBoard(docSnap.data())
 

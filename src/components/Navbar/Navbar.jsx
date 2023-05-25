@@ -5,7 +5,7 @@ import { useAuthValue } from '../../context/AuthContext';
 import { useAuthentication } from '../../hooks/useAuthentication';
 import AddBoard from '../../component popovers/AddBoard/AddBoard';
 
-function Navbar({addBoardPopup}) {
+function Navbar({addTaskPopup}) {
 
     const { user } = useAuthValue();
     const { logout } = useAuthentication();
@@ -30,7 +30,7 @@ function Navbar({addBoardPopup}) {
 
                 {user && (
                     <>
-                        <button className='bt-add-task purpleButton'>
+                        <button className='bt-add-task purpleButton' onClick={() => addTaskPopup.current.classList.add('show')}>
                             + Add New Task
                         </button>
                         <button className='bt-add-task purpleButton' onClick={logout}>

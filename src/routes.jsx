@@ -3,7 +3,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/register";
 import CurrentBoard from "./pages/CurrentBoard/CurrentBoard";
-import Root from "./App";
+import Root from "./Root";
 
 
 
