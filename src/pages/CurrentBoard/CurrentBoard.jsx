@@ -59,7 +59,7 @@ function CurrentBoard() {
        
 
 
-    }, [boardid])
+    }, [boardid, selectedBoard])
 
 
 
