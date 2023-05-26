@@ -1,10 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import style from './sidebar.module.scss'
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
-import { db } from "../../firebase config/database";
-import { collection, query, orderBy, onSnapshot, where, getDocs } from 'firebase/firestore'
-import { useFetchDocuments } from '../../hooks/useFetchDocuments';
 import { getUserBoards } from '../../utils/getBoard';
 
 

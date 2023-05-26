@@ -1,28 +1,23 @@
-MVP
-> Sem edição de tarefas
+FEATURES TO DO
+> EDITAR TAREFAS (SOMENTE MUDANÇA DE STATUS DE SUBTASK E MUDANÇA DE BOARD)
 
-> sem criação de colunas
+> EXCLUIR TAREFAS
 
-> menu lateral expansivel (mesmo layout desktop e mobile)
+> THEME SWITCH
 
-> create boards
+> RECUPERAR SENHA
 
-> change board type
+>ADICIONAR ALGO OU SE LIVRAR DA HOMEPAGE
 
+> CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
 
+EXTRAS (NÃO TEM NO PROJETO ORIGINAL)
+> EDITAR TAREFAS (MUDAR NOME E DESCRIÇÃO)
 
+> EDITAR SUBTAREFAS 
 
-Ordem de features:
+> EXCLUIR SUBTAREFAS
 
+> EDITAR NOME DE BOARD
 
-
-ENTREGA FINAL
-> Tarefas já criadas editaveis (reuso da função de add nova task)
-
-> menu lateral expansivel (mesmo layout desktop e mobile)
-
->poção de criar colunas
-
-Logica: 
-
-user.board é um state, a cada mudança envia dados p firebase
+> EDITAR NOME DE COLUNA

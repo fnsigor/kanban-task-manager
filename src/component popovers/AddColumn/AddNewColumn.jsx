@@ -1,13 +1,9 @@
-import React from 'react'
-import style from './newColumn.module.scss'
+import React, { forwardRef } from 'react'
 
-
-
-function AddNewColumn() {
-
+const AddColumn = forwardRef((props,ref) => {
 
     return (
-        <div className={`shadow `+style.content} id="AddNewColumn" ref={addNewColumn}>
+        <div className={`shadow `} id="AddNewColumn" ref={ref}>
             <form className="content">
                 <div>
                     <label htmlFor="columnName">Create New Column at -board</label>
@@ -18,10 +14,10 @@ function AddNewColumn() {
                     <input type="color" id="color" name="color" />
                 </div>
                 <button className="btn">Create column</button>
-                <button className="btn"onClick={hideContent('addNewColumn')}>Cancel</button>
+                <button className="btn">Cancel</button>
             </form>
         </div>
     )
-}
+})
 
-export default AddNewColumn
+export default AddColumn

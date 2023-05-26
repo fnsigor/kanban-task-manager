@@ -1,6 +1,4 @@
 import React, { forwardRef, useEffect, useState } from 'react'
-import { db } from "../../firebase config/database";
-import { collection, query, orderBy, onSnapshot, where } from 'firebase/firestore'
 import { useParams } from 'react-router-dom';
 import { useUpdateDocument } from '../../hooks/useUpdateDocument';
 import { getUserBoards } from '../../utils/getBoard';
@@ -20,9 +18,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
             id: 'subtask2'
         },
     ])
-    const [formError, setFormError] = useState("");
-    const [boards, setBoards] = useState([])
-    const [columns, setColumns] = useState([])
+
     const [taskName, setTaskName] = useState('')
     const [selectedBoard, setSelectedBoard] = useState(null)
     const [selectedColumn, setSelectedColumn] = useState('')

@@ -2,7 +2,7 @@
 
 
 
-.columnList{
+.columnList {
     padding: 4rem;
     width: 100%;
     height: 100%;
@@ -12,19 +12,31 @@
 }
 
 
-.newColumnLi{
-    background-color: #23232f;
-    @include useFlex;
+.newColumnLi {
 
     width: 25rem;
 
-    button{
-        color: $text-gray;
-        font-size: 20px;
+    form {
+        background-color: #4949577f;
+        
+        width: 100%;
 
-        &:hover{
-            cursor: pointer;
-            color: $text-color;
-        }
+        border-radius: 10px;
+
+        @include useFlex(column);
+    }
+    
+    
+    input{
+        width: 100%;
+        padding: 1rem 1rem;
+        outline: none;
+        color: #fff;
+    }
+
+    button{
+        display: none;
+        background-color: blue;
+        color: #fff;
     }
 }

@@ -7,22 +7,19 @@ import { onAuthStateChanged } from "firebase/auth"
 import { Outlet } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import AddBoard from './component popovers/AddBoard/AddBoard'
-import { db } from "./firebase config/database";
-import { collection, query, orderBy, onSnapshot, where, getDocs } from 'firebase/firestore'
 import AddTask from './component popovers/AddTask/AddTask'
+import AddColumn from './component popovers/AddColumn/AddNewColumn'
 
 function Root() {
 
   const [user, setUser] = useState()
-  const [selectedBoard, setSelectedBoard] = useState('')
-
-  const [DOMPopups, setDOMPopups] = useState([])
 
 
   const { auth } = useAuthentication()
 
   const addBoardPopup = useRef()
   const addTaskPopup = useRef()
+  const addColumnPopup = useRef()
 
 
   useEffect(() => {
@@ -32,10 +29,6 @@ function Root() {
     })
 
   }, [auth])
-
-  useEffect(() => {//caso precise, esse estao armazena todos os popups
-    setDOMPopups([...DOMPopups, addBoardPopup])
-  }, [])
 
 
 
@@ -53,6 +46,7 @@ function Root() {
 
         <AddTask ref={addTaskPopup} userid={user?.uid} />
         <AddBoard ref={addBoardPopup} />
+        <AddColumn ref={addColumnPopup} />
 
       </div>
 
