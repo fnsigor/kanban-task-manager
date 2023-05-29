@@ -31,9 +31,8 @@ const EditTask = forwardRef(({ userid }, ref) => {
     }, [selectedTaskData])
 
 
-    const handleSubmit = (e) => {
+    const updateTaskSubmit = () => {
         ref.current.classList.toggle('show')
-        console.log('fechou o popup')
 
         const updatedTask = {
             name: taskName,
@@ -43,14 +42,11 @@ const EditTask = forwardRef(({ userid }, ref) => {
             id: selectedTaskData.id,
         }
 
-        // console.log(updatedTask) //ok, ta atualizado
-
-
         const updatedColumns = selectedBoard.columns.map(column => {
 
             if (column.id == selectedTaskData.columnId) {
 
-                const columnUpdatedTasksList = column.tasks.map(task => {
+                const columnUpdatedTaskList = column.tasks.map(task => {
                     if (task.id === updatedTask.id) {
                         return updatedTask
                     } else {
@@ -60,16 +56,12 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
                 return {
                     ...column,
-                    tasks: columnUpdatedTasksList
+                    tasks: columnUpdatedTaskList
                 };
             }
 
             return column
         })
-
-
-        //console.log('colunas atualizadas',updatedColumns) ok
-
 
 
         const updatedBoard = {
@@ -79,20 +71,33 @@ const EditTask = forwardRef(({ userid }, ref) => {
             userId: selectedBoard.userId,
         }
 
-
-        // console.log('board todo atualizado', updatedBoard) ok
-
-
         updateDocument(boardid, updatedBoard);
-
-
-        alert('Tarefa EDITADA com sucesso')
     };
+
+
+    const handleCheckboxChange = (event, index) => {
+        const updatedSubtask = subtasks[index]
+        updatedSubtask.completed = event.target.checked
+        setSubtasks(subtasks.map((subtask, i) => {
+            if (index === i) {
+                return updatedSubtask
+            } else {
+                return subtask
+            }
+        }))
+    }
+
+
+    const deleteSubtask = (deletedSubtaskId) => {
+        const newSubtasks = subtasks.filter(subtask => subtask.id != deletedSubtaskId)
+        setSubtasks(newSubtasks)
+    }
+
 
     return (
         <div className="shadow" ref={ref} onClick={(e) => {
             if (e.target.classList[0] === 'shadow') {
-                handleSubmit()
+                updateTaskSubmit()
             }
         }}>
 
@@ -101,14 +106,18 @@ const EditTask = forwardRef(({ userid }, ref) => {
                 <form >
 
                     <div>
-                        <input type="text" name="" id="" placeholder='e.g Take coffee break'
+                        <input
+                            type="text"
+                            placeholder='e.g Take coffee break'
                             onChange={(e) => setTaskName(e.target.value)}
                             value={taskName}
                         />
                     </div>
 
                     <div>
-                        <textarea cols="30" rows="10"
+                        <textarea
+                            cols="30"
+                            rows="10"
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder='e.g It´s alwais goog to take a break. This 15 minutes break will recharge the batteries a little.'
@@ -121,7 +130,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
                         <span>Subtasks</span>
                         {
                             subtasks.map((subtask, index) => (
-                                <div key={subtask.id + index}>
+                                <div key={subtask.id}>
                                     <input
                                         checked={subtask.completed}
                                         type="checkbox"
@@ -129,24 +138,11 @@ const EditTask = forwardRef(({ userid }, ref) => {
                                         id={subtask.id}
                                         placeholder={subtask.name}
                                         value={subtask.completed}
-                                        onChange={(e) => {
-                                            let updatedSubtask = subtasks[index]
-                                            updatedSubtask.completed = e.target.checked
-                                            setSubtasks(subtasks.map((subt, i) => {
-                                                if (index === i) {
-                                                    return updatedSubtask
-                                                } else {
-                                                    return subt
-                                                }
-                                            }))
-                                        }}
+                                        onChange={(event) => handleCheckboxChange(event, index)}
                                     />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 
-                                    <span onClick={() => {
-                                        const newSubtasks = subtasks.filter(currentSubtask => currentSubtask.id != subtask.id)
-                                        setSubtasks(newSubtasks)
-                                    }}>delete</span>
+                                    <span onClick={() => deleteSubtask(subtask.id)}>delete</span>
 
                                 </div>
                             ))
