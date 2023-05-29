@@ -38,7 +38,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
     }, [userid, boardid])
 
 
-    const handleSubmit = (e) => {
+    const createTaskSubmit = (e) => {
         e.preventDefault();
 
         const newTask = {
@@ -81,25 +81,51 @@ const AddTask = forwardRef(({ userid }, ref) => {
         alert('Tarefa adicionada com sucesso')
     };
 
+
+    const handleSubtaskNameChange = (event, i) => {
+        let currentSubtasksState = subtasks
+        currentSubtasksState[i].name = event.target.value
+        setSubtasks(currentSubtasksState)
+    }
+
+    const deleteSubtask = (deletedSubtaskId) => {
+        const newSubtasks = subtasks.filter(subtask => subtask.id != deletedSubtaskId)
+        setSubtasks(newSubtasks)
+    }
+
+    const createSubtask = () => {
+        const newSubtask = {
+            name: 'New Subtask',
+            completed: false,
+            id: ('subTaskId' + subtasks.length) + Math.random() * (99 - 1) + 1
+        }
+        setSubtasks([...subtasks, newSubtask])
+    }
+
     return (
         <div className="shadow" ref={ref} >
             <div className='popupForm'>
                 <h4>Add new Task</h4>
                 <span className="closePopup" onClick={() => ref.current.classList.toggle('show')}>cancelar</span>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={createTaskSubmit}>
 
                     <div>
                         <label>Title</label>
-                        <input type="text" name="" id="" placeholder='e.g Take coffee break'
-                            onChange={(e) => setTaskName(e.target.value)} value={taskName}
+                        <input
+                            type="text"
+                            placeholder='e.g Take coffee break'
+                            onChange={(e) => setTaskName(e.target.value)}
+                            value={taskName}
                         />
                     </div>
 
                     <div>
                         <label>Description</label>
-                        <textarea cols="30" rows="10"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        <textarea
+                            cols="30"
+                            rows="10"
+                            value={description}
+                            onChange={(e) => setDescription(e.target.value)}
                             placeholder='e.g It´s alwais goog to take a break. This 15 minutes break will recharge the batteries a little.'
                         ></textarea>
                     </div>
@@ -111,30 +137,19 @@ const AddTask = forwardRef(({ userid }, ref) => {
                         {
                             subtasks.map((subtask, index) => (
                                 <div key={subtask.name + index}>
-                                    <input type="text" name="" id="" placeholder={subtask.name} defaultValue={subtask.name} onChange={(e) => {
-                                        let currentSubtasksState = subtasks
-                                        currentSubtasksState[index].name = e.target.value
-                                        setSubtasks(currentSubtasksState)
-                                    }} />
+                                    <input type="text"
+                                        placeholder={subtask.name}
+                                        defaultValue={subtask.name}
+                                        onChange={(event) => handleSubtaskNameChange(event, index)} />
 
-                                    <span onClick={() => {
-                                        const newSubtasks = subtasks.filter(currentSubtask => currentSubtask.id != subtask.id)
-                                        setSubtasks(newSubtasks)
-                                    }}>delete</span>
+                                    <span onClick={() => deleteSubtask(subtask.id)}>delete</span>
                                 </div>
                             ))
                         }
                     </div>
 
 
-                    <button className="whiteButton" type='button' onClick={() => {
-                        const newSubtask = {
-                            name: 'New Subtask',
-                            completed: false,
-                            id: ('subTaskId' + subtasks.length) + Math.random() * (99 - 1) + 1
-                        }
-                        setSubtasks([...subtasks, newSubtask])
-                    }} >
+                    <button className="whiteButton" type='button' onClick={createSubtask} >
                         + Add New Subtask
                     </button>
 
@@ -143,14 +158,14 @@ const AddTask = forwardRef(({ userid }, ref) => {
 
                         {selectedBoard && (
                             <select
-                            required
+                                required
                                 name="board"
                                 id="board"
                                 onChange={e => setSelectedColumn(e.target.value)}
                                 defaultValue='select a column'
                             >
                                 <option key='select a column' value='select a column' disabled>
-                                select a column
+                                    select a column
                                 </option>
 
                                 {selectedBoard.columns.map((column, i) => (

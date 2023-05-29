@@ -8,7 +8,6 @@ import { Outlet } from 'react-router-dom'
 import { AuthProvider } from './context/AuthContext'
 import AddBoard from './component popovers/AddBoard/AddBoard'
 import AddTask from './component popovers/AddTask/AddTask'
-import AddColumn from './component popovers/AddColumn/AddNewColumn'
 import EditTask from './component popovers/EditTask,jsx/EditTask'
 import { EditTaskPopupHTMLProvider } from './context/editTaskHTMLContext'
 import { SelectedTaskProvider } from './context/selectedTaskContext'
@@ -23,7 +22,6 @@ function Root() {
 
   const addBoardPopup = useRef()
   const addTaskPopup = useRef()
-  const addColumnPopup = useRef()
   const editTaskPopup = useRef()
 
 
@@ -54,8 +52,8 @@ function Root() {
 
               <AddTask ref={addTaskPopup} userid={user?.uid} />
               <AddBoard ref={addBoardPopup} />
-              <AddColumn ref={addColumnPopup} />
               <EditTask ref={editTaskPopup} />
+              
             </SelectedTaskProvider>
           </EditTaskPopupHTMLProvider>
         </SelectedBoardProvider>

@@ -7,7 +7,7 @@ import {
 } from "firebase/auth";
 
 import { useState, useEffect } from "react";
-import { app } from "../firebase config/database";
+import { app } from "../firebase/database";
 import { useNavigate } from "react-router-dom";
 
 export const useAuthentication = () => {
