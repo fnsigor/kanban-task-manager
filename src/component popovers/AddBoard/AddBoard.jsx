@@ -32,8 +32,27 @@ const AddBoard = forwardRef((props, ref) => {
     const { insertDocument, response } = useInsertDocument("boards");
 
 
+    const deleteColumnFromBoard = (column) => {
+        const newColumns = columns.filter(currentColumn => currentColumn.id != column.id)
+        setColumns(newColumns)
+    }
 
-    const handleSubmit = (e) => {
+    const addColumnToBoard = () => {
+        const newColumn = {
+            name: 'New Column',
+            tasks: [],
+            id: 'columnId' + columns.length + Math.random() * (99 - 1) + 1
+        }
+        setColumns([...columns, newColumn])
+    }
+
+    const updateColumnName = (i, event) => {
+        let currentColumnState = columns
+        currentColumnState[i].name = event.target.value
+        setColumns(currentColumnState)
+    }
+
+    const CreateBoardSubmit = (e) => {
         e.preventDefault();
 
         setFormError("");
@@ -58,7 +77,7 @@ const AddBoard = forwardRef((props, ref) => {
 
         insertDocument({
             boardName,
-            boardId:  Math.random() * (99 - 1) + 1 + Math.random() * (99 - 1) + 1,
+            boardId: Math.random() * (99 - 1) + 1 + Math.random() * (99 - 1) + 1,
             columns,
             userId: user.uid,
         });
@@ -70,11 +89,11 @@ const AddBoard = forwardRef((props, ref) => {
 
 
     return (
-        <div className="shadow" ref={ref} id=''>
+        <div className="shadow" ref={ref}>
             <div className='popupForm'>
                 <h4>Create New Board</h4>
                 <span className="closePopup" onClick={() => ref.current.classList.toggle('show')}>cancelar</span>
-                <form onSubmit={handleSubmit}>
+                <form onSubmit={CreateBoardSubmit}>
 
                     <div>
                         <label>Board Name</label>
@@ -87,28 +106,14 @@ const AddBoard = forwardRef((props, ref) => {
                         {
                             columns.map((column, index) => (
                                 <div key={column.name + index}>
-                                    <input type="text" name="" id="" defaultValue={column.name} onChange={(e) => {
-                                        let currentColumnState = columns
-                                        currentColumnState[index].name = e.target.value
-                                        setColumns(currentColumnState)
-                                    }} />
-                                    <span onClick={() => {
-                                        const newColumns = columns.filter(currentColumn => currentColumn.id != column.id)
-                                        setColumns(newColumns)
-                                    }}>excluir</span>
+                                    <input type="text" name="" id="" defaultValue={column.name} onChange={(event) => updateColumnName(index, event)} />
+                                    <span onClick={() => deleteColumnFromBoard(column)}>excluir</span>
                                 </div>
                             ))
                         }
                     </div>
 
-                    <button className="whiteButton" type='button' onClick={() => {
-                        const newColumn = {
-                            name: 'New Column',
-                            tasks: [],
-                            id: 'columnId' + columns.length + Math.random() * (99 - 1) + 1
-                        }
-                        setColumns([...columns, newColumn])
-                    }} >
+                    <button className="whiteButton" type='button' onClick={addColumnToBoard} >
                         Add column
                     </button>
 
