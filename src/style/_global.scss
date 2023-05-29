@@ -53,6 +53,7 @@ $text-color: #fff;
     margin-left: 15px;
     cursor: pointer;
 }
+
 .whiteButton {
     background-color: #fff;
     border-radius: 20px;
@@ -101,7 +102,7 @@ $text-color: #fff;
     display: none;
 }
 
-.show{
+.show {
     display: block;
 }
 
@@ -110,40 +111,47 @@ $text-color: #fff;
     font-size: 62.5%
 }
 
-.popupForm{
+.popupForm {
 
-    width: 800px;
+    width: 500px;
+
+    padding: 3.5rem;
 
     position: relative;
 
     background-color: $component-gray;
 
-    .closePopup{
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    .closePopup {
         position: absolute;
         top: 1rem;
         right: 1rem;
         font-size: 1.4rem;
     }
 
-    h4{
+    h4 {
         font-size: 3rem;
         margin-bottom: 2rem;
     }
 
-    form > div{
+    form>div {
         @include useFlex(column);
         align-items: start;
         margin-bottom: 2.5rem;
     }
 
-    label{
+    label {
         align-items: start;
 
         margin-bottom: 1rem;
         font-size: 2rem;
     }
 
-    input, textarea {
+    input,
+    textarea {
         font-size: 1.8rem;
         border: 1px solid #ddd;
         border-radius: 5px;
@@ -151,13 +159,55 @@ $text-color: #fff;
         color: #fff;
     }
 
-    textarea{
+    textarea {
         resize: none;
     }
 
-    .boardColumns div{
+    .boardColumns div {
         @include useFlex(row);
         gap: 1rem;
         margin-bottom: 1rem;
     }
+}
+
+.popupForm.EditTask {
+
+    form>div {
+        display: block;
+
+        margin-bottom: 2.5rem;
+    }
+
+    label {
+        align-items: start;
+
+        margin-bottom: 1rem;
+        font-size: 2rem;
+    }
+
+    input[type='text'],
+    textarea {
+        font-size: 1.8rem;
+        border: 1px solid #dddddd15;
+        border-radius: 5px;
+        padding: 0;
+        color: #fff;
+        width: 100%;
+    }
+
+    textarea {
+        resize: none;
+    }
+
+
+    input[type='checkbox']:checked + label{
+        text-decoration: line-through;
+    }
+
+    .boardColumns div {
+        justify-content: start;
+        margin-bottom: 1rem;
+        background-color: $dark-bg;
+    }
+
 }

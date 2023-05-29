@@ -9,6 +9,10 @@ import { AuthProvider } from './context/AuthContext'
 import AddBoard from './component popovers/AddBoard/AddBoard'
 import AddTask from './component popovers/AddTask/AddTask'
 import AddColumn from './component popovers/AddColumn/AddNewColumn'
+import EditTask from './component popovers/EditTask,jsx/EditTask'
+import { EditTaskPopupHTMLProvider } from './context/editTaskHTMLContext'
+import { SelectedTaskProvider } from './context/selectedTaskContext'
+import { SelectedBoardProvider } from './context/selectedBoardContext'
 
 function Root() {
 
@@ -20,6 +24,7 @@ function Root() {
   const addBoardPopup = useRef()
   const addTaskPopup = useRef()
   const addColumnPopup = useRef()
+  const editTaskPopup = useRef()
 
 
   useEffect(() => {
@@ -38,16 +43,22 @@ function Root() {
     <AuthProvider value={{ user }}>
 
       <div id="app">
-        <Sidebar addBoardPopup={addBoardPopup} userid={user?.uid} />
-        <div>
-          <Navbar addTaskPopup={addTaskPopup} />
-          <Outlet />
-        </div>
+        <SelectedBoardProvider>
+          <EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
+            <SelectedTaskProvider>
+              <Sidebar addBoardPopup={addBoardPopup} userid={user?.uid} />
+              <div>
+                <Navbar addTaskPopup={addTaskPopup} />
+                <Outlet />
+              </div>
 
-        <AddTask ref={addTaskPopup} userid={user?.uid} />
-        <AddBoard ref={addBoardPopup} />
-        <AddColumn ref={addColumnPopup} />
-
+              <AddTask ref={addTaskPopup} userid={user?.uid} />
+              <AddBoard ref={addBoardPopup} />
+              <AddColumn ref={addColumnPopup} />
+              <EditTask ref={editTaskPopup} />
+            </SelectedTaskProvider>
+          </EditTaskPopupHTMLProvider>
+        </SelectedBoardProvider>
       </div>
 
     </AuthProvider>

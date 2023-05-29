@@ -30,7 +30,7 @@ function Navbar({addTaskPopup}) {
 
                 {user && (
                     <>
-                        <button className='bt-add-task purpleButton' onClick={() => addTaskPopup.current.classList.add('show')}>
+                        <button className='bt-add-task purpleButton' onClick={() => addTaskPopup.current.classList.toggle('show')}>
                             + Add New Task
                         </button>
                         <button className='bt-add-task purpleButton' onClick={logout}>

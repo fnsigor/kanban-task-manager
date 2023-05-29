@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import Column from '../../components/Column/Column';
 import { getUserBoards } from '../../utils/getBoard';
 import { useUpdateDocument } from '../../hooks/useUpdateDocument';
+import useBoardContext from '../../hooks/useBoardContext';
 
 function CurrentBoard() {
 
@@ -14,8 +15,6 @@ function CurrentBoard() {
 
     const { boardid } = useParams()
 
-
-    const [selectedBoard, setSelectedBoard] = useState(null);
     const [error, setError] = useState(null);
     const [loading, setLoading] = useState(null);
 
@@ -24,6 +23,8 @@ function CurrentBoard() {
     const btAddColumn = useRef()
 
     const { updateDocument, response } = useUpdateDocument("boards");
+
+    const {selectedBoard, setSelectedBoard} = useBoardContext()
 
 
     useEffect(() => {
@@ -77,7 +78,7 @@ function CurrentBoard() {
 
             {selectedBoard
                 ? (
-                    selectedBoard.columns.map((column, index) => (<Column name={column.name} tasks={column.tasks} key={'column' + index} />))
+                    selectedBoard.columns.map((column, index) => (<Column name={column.name} tasks={column.tasks} key={column.id} columnId={column.id}/>))
                 )
                 : (<p>loading data</p>)
             }

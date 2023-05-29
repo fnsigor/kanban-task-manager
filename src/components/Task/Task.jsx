@@ -1,11 +1,19 @@
+
+import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
 import style from './task.module.scss'
 
-export function Task({ task }) {
+export function Task({ task, toggleClass, columnId, }) {
 
     const completedSubtasksNumber = task.subtasks.filter(subtask => subtask.completed === true).length
 
+    const {setSelectedTaskData} = useSelectedTaskContext()
+
+
     return (
-        <li className={style.taskContainer}>
+        <li className={style.taskContainer} onClick={() => {
+            setSelectedTaskData({...task, columnId})
+            toggleClass()
+        }}>
             <h6 className='task-title'>{task.name}</h6>
             {task.subtasks.length > 0 && (
                 <p>{completedSubtasksNumber} of {task.subtasks.length} subtasks</p>

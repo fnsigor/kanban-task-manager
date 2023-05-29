@@ -20,6 +20,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
     ])
 
     const [taskName, setTaskName] = useState('')
+    const [description, setDescription] = useState('')
     const [selectedBoard, setSelectedBoard] = useState(null)
     const [selectedColumn, setSelectedColumn] = useState('')
 
@@ -42,6 +43,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
 
         const newTask = {
             name: taskName,
+            description,
             completed: false,
             subtasks,
             id: Math.random() * (99 - 1) + 1 + 'task' + Math.random() * (99 - 1) + 1,
@@ -96,6 +98,8 @@ const AddTask = forwardRef(({ userid }, ref) => {
                     <div>
                         <label>Description</label>
                         <textarea cols="30" rows="10"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
                             placeholder='e.g It´s alwais goog to take a break. This 15 minutes break will recharge the batteries a little.'
                         ></textarea>
                     </div>

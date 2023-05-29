@@ -2,9 +2,16 @@ import React from 'react'
 
 import style from './column.module.scss'
 import { Task } from '../Task/Task'
+import { useContext, useEffect } from 'react'
+import useEditTaskHTML from '../../hooks/useEditTaskHTML'
 
+function Column({ name, tasks, columnId }) {
 
-function Column({ name, tasks }) {
+  const {editTaskElement, setEditTaskElement} = useEditTaskHTML()
+
+  const toggleClass = () => {
+    editTaskElement.current.classList.toggle('show')
+  }
 
   return (
     <li className={style.columnContainer}>
@@ -12,7 +19,7 @@ function Column({ name, tasks }) {
 
       <ul>
         {tasks.map((task, index, array) => (
-         <Task task={task} key={'task'+index}/>
+         <Task task={task} key={'task'+index} toggleClass={toggleClass} columnId={columnId} />
         ))}
       </ul>
     </li>
