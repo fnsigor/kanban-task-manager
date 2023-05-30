@@ -1,10 +1,12 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { useUpdateDocument } from '../../hooks/useUpdateDocument';
 import { getUserBoards } from '../../utils/getBoard';
+import useColumnContext from '../../hooks/useColumnContext';
+import { updateBoard } from '../../utils/updateBoard';
+import useBoardContext from '../../hooks/useBoardContext';
 
 
-const AddTask = forwardRef(({ userid }, ref) => {
+const AddTask = forwardRef((props, ref) => {
 
     const [subtasks, setSubtasks] = useState([
         {
@@ -21,25 +23,25 @@ const AddTask = forwardRef(({ userid }, ref) => {
 
     const [taskName, setTaskName] = useState('')
     const [description, setDescription] = useState('')
-    const [selectedBoard, setSelectedBoard] = useState(null)
-    const [selectedColumn, setSelectedColumn] = useState('')
 
-    const { updateDocument, response } = useUpdateDocument("boards");
+
+    const { selectedColumn } = useColumnContext()
+
+    const {selectedBoard, setSelectedBoard} = useBoardContext()
+
 
     const { boardid } = useParams()
 
 
-    useEffect(() => {
-
-        if (userid) {
-            getUserBoards(userid, setSelectedBoard, 'one', boardid)
-        }
-
-    }, [userid, boardid])
-
-
     const createTaskSubmit = (e) => {
+
         e.preventDefault();
+        
+        const storageJSON = localStorage.getItem(boardid)
+
+        const selectedBoard = JSON.parse(storageJSON)
+
+    
 
         const newTask = {
             name: taskName,
@@ -49,9 +51,11 @@ const AddTask = forwardRef(({ userid }, ref) => {
             id: Math.random() * (99 - 1) + 1 + 'task' + Math.random() * (99 - 1) + 1,
         }
 
-        console.log('task criada:', newTask)
+    
 
-        console.log('coluna selecionada:', selectedColumn)
+       // console.log('coluna selecionada:', selectedColumn)
+
+        
 
         const updatedColumns = selectedBoard.columns.map(column => {
 
@@ -65,20 +69,18 @@ const AddTask = forwardRef(({ userid }, ref) => {
             return column
         })
 
-        console.log('colunas atualizadas:', updatedColumns)
-
         const updatedBoard = {
             boardName: selectedBoard.boardName,
-            boardId: selectedBoard.boardId,
+            id: selectedBoard.id,
             columns: updatedColumns,
-            userId: selectedBoard.userId,
         }
 
-        updateDocument(boardid, updatedBoard);
+      updateBoard(updatedBoard, setSelectedBoard); //atualiza o estado e o local storage
+
 
         ref.current.classList.toggle('show')
 
-        alert('Tarefa adicionada com sucesso')
+       // alert('Tarefa adicionada com sucesso')
     };
 
 
@@ -153,7 +155,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
                         + Add New Subtask
                     </button>
 
-                    <div>
+                    {/* <div>
                         <label htmlFor="board">Select column</label>
 
                         {selectedBoard && (
@@ -178,7 +180,7 @@ const AddTask = forwardRef(({ userid }, ref) => {
                         )}
 
 
-                    </div>
+                    </div> */}
 
 
                     <button className="purpleButton">

@@ -1,43 +1,30 @@
 import React, { useEffect, useRef, useState } from 'react'
 import style from './CurrentBoard.module.scss'
-import { useAuthValue } from '../../context/AuthContext';
 import { useNavigate, useParams } from 'react-router-dom';
 import Column from '../../components/Column/Column';
 import { getUserBoards } from '../../utils/getBoard';
-import { useUpdateDocument } from '../../hooks/useUpdateDocument';
 import useBoardContext from '../../hooks/useBoardContext';
+import { updateBoard } from '../../utils/updateBoard';
 
 function CurrentBoard() {
 
-    const { user } = useAuthValue()
-
-    const navigate = useNavigate()
-
     const { boardid } = useParams()
-
-    const [error, setError] = useState(null);
-    const [loading, setLoading] = useState(null);
-
     const [columnName, setColumnName] = useState('');
-
     const btAddColumn = useRef()
-
-    const { updateDocument, response } = useUpdateDocument("boards");
-
     const {selectedBoard, setSelectedBoard} = useBoardContext()
 
 
-    useEffect(() => {
-        if (!user) {
-            setLoading(true)
-        }
-
-        getUserBoards(null, setSelectedBoard, 'one', boardid)
-
-    }, [boardid, selectedBoard])
+    useEffect(() => { //pra pegar o board selecionado na sidebar
+        getUserBoards(setSelectedBoard, 'one', boardid)
+    }, [boardid])
 
 
-    const handleSubmit = (e) => {
+    useEffect(()=>{ //sempre que atualizar o estado do board,manda a nova versão dele pro localStorage
+
+    }, [])
+
+
+    const createColumnSubmit = (e) => {
 
         e.preventDefault();
 
@@ -53,23 +40,15 @@ function CurrentBoard() {
 
         const updatedBoard = {
             boardName: selectedBoard.boardName,
-            boardId: selectedBoard.boardId,
-            columns: newColumns,
-            userId: selectedBoard.userId,
+            id: selectedBoard.id,
+            columns: newColumns
         }
 
-        updateDocument(boardid, updatedBoard);
+        updateBoard(updatedBoard, setSelectedBoard); 
 
         setColumnName('')
 
-        alert('coluna adicionada com sucesso')
     }
-
-
-
-
-
-
 
 
 
@@ -78,13 +57,13 @@ function CurrentBoard() {
 
             {selectedBoard
                 ? (
-                    selectedBoard.columns.map((column, index) => (<Column name={column.name} tasks={column.tasks} key={column.id} columnId={column.id}/>))
+                    selectedBoard.columns.map((column, index) => (<Column name={column.name} columnindex={index} tasks={column.tasks} key={column.id} columnId={column.id}/>))
                 )
                 : (<p>loading data</p>)
             }
 
             <li className={style.newColumnLi}>
-                <form className={style.newColumnLi} onSubmit={handleSubmit}>
+                <form className={style.newColumnLi} onSubmit={createColumnSubmit}>
                     <input
                         type="text"
                         placeholder="+ Adicionar outra coluna"

@@ -1,7 +1,5 @@
 import { createHashRouter } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Login from "./pages/login/Login";
-import Register from "./pages/register/register";
 import CurrentBoard from "./pages/CurrentBoard/CurrentBoard";
 import Root from "./Root";
 
@@ -27,17 +25,10 @@ export const router = createHashRouter([
                         element: <CurrentBoard />,
                     },
                     {
-                        path: "/login",
-                        element: <Login />,
-                    },
-                    {
                         path: "/home",
                         element: <Home />,
                     },
-                    {
-                        path: "/cadastro",
-                        element: <Register />,
-                    },
+                   
                 ]
             },
         ]

@@ -1,8 +1,9 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
 import useBoardContext from '../../hooks/useBoardContext'
-import { useUpdateDocument } from '../../hooks/useUpdateDocument'
+
 import { useParams } from 'react-router-dom'
+import { updateBoard } from '../../utils/updateBoard'
 
 const EditTask = forwardRef(({ userid }, ref) => {
 
@@ -12,9 +13,8 @@ const EditTask = forwardRef(({ userid }, ref) => {
     const [description, setDescription] = useState('')
     const [subtasks, setSubtasks] = useState([])
 
-    const { selectedBoard } = useBoardContext()
 
-    const { updateDocument, response } = useUpdateDocument("boards");
+    const {selectedBoard, setSelectedBoard} = useBoardContext()
 
 
     const { boardid } = useParams()
@@ -66,12 +66,11 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
         const updatedBoard = {
             boardName: selectedBoard.boardName,
-            boardId: selectedBoard.boardId,
+            id: selectedBoard.id,
             columns: updatedColumns,
-            userId: selectedBoard.userId,
         }
 
-        updateDocument(boardid, updatedBoard);
+        updateBoard(updatedBoard, setSelectedBoard); //atualiza o estado e o local storage
     };
 
 
@@ -137,8 +136,9 @@ const EditTask = forwardRef(({ userid }, ref) => {
                                         name={subtask.id}
                                         id={subtask.id}
                                         placeholder={subtask.name}
-                                        value={subtask.completed}
+                                  
                                         onChange={(event) => handleCheckboxChange(event, index)}
+                                        
                                     />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 

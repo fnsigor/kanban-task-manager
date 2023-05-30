@@ -1,8 +1,4 @@
-import { db } from "../firebase/database";
-import { collection, query, orderBy, onSnapshot, where, doc, getDoc } from 'firebase/firestore'
-
-
-export const getUserBoards = async (uid, setFunction ,action = 'all', boardid) => {
+export const getUserBoards = async (setFunction, action = 'all', boardid) => {
 
 
     switch (action) {
@@ -11,14 +7,11 @@ export const getUserBoards = async (uid, setFunction ,action = 'all', boardid) =
 
             try {
 
-                const docRef = doc(db, 'boards', boardid)
+                const storageJSON = localStorage.getItem(boardid)
 
-                const docSnap = await getDoc(docRef)
+                const JSObjectBoard = JSON.parse(storageJSON)
 
-                const board = docSnap.data()
-
-                setFunction(board)
-
+                setFunction(JSObjectBoard)
 
             } catch (error) {
                 console.log(error)
@@ -28,22 +21,15 @@ export const getUserBoards = async (uid, setFunction ,action = 'all', boardid) =
 
         case 'all':
 
-            const collectionRef = collection(db, 'boards');
 
-            const q = query(
-                collectionRef,
-                where('userId', '==', uid),
-                orderBy('createdAt', 'desc')
-            );
+            const allStorageBoards = Object.keys(localStorage).map(boardid => {
+                const boardJSON = localStorage.getItem(boardid)
+                return JSON.parse(boardJSON)
+            })
 
-            onSnapshot(q, (querySnapshot) => {
 
-                const boards = querySnapshot.docs.map((doc) => (
-                    { id: doc.id, ...doc.data() }
-                ));
+            setFunction(allStorageBoards)
 
-                setFunction(boards)
-            });
 
             break;
 

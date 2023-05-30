@@ -15,5 +15,18 @@
         gap: 2rem;
     }
 
+    input{
+        width: 100%;
+        padding: 1rem 1rem;
+        outline: none;
+        color: #fff;
+    }
+
+    button{
+        display: none;
+        background-color: blue;
+        color: #fff;
+    }
+
 
 }

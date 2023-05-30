@@ -1,16 +1,10 @@
 FEATURES TO DO
 
+>drag and drop pra mudar tarefa de coluna
 
 > EXCLUIR TAREFAS
 
-
-> EDITAR SUBTAREFAS 
-
-
-
 > THEME SWITCH
-
-> RECUPERAR SENHA
 
 >ADICIONAR ALGO OU SE LIVRAR DA HOMEPAGE
 
@@ -19,11 +13,11 @@ FEATURES TO DO
 EXTRAS (NÃO TEM NO PROJETO ORIGINAL)
 
 
+> ADICIONAR SUBTAREFAS 
+
 > EDITAR NOME DE BOARD
 
 > EDITAR NOME DE COLUNA
-
-> deixar criação de tarefas igual o trello
 
 > Editar nome de subtask
 

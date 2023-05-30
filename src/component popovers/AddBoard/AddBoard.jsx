@@ -1,9 +1,6 @@
 import React, { forwardRef, useState } from 'react'
-import { useAuthValue } from '../../context/AuthContext';
-import { useInsertDocument } from '../../hooks/useInsertDocument';
 
-
-const AddBoard = forwardRef((props, ref) => {
+const AddBoard = forwardRef(({setAvailableBoards, availableBoards }, ref) => {
 
 
     const [formError, setFormError] = useState("");
@@ -27,9 +24,6 @@ const AddBoard = forwardRef((props, ref) => {
     ])
 
 
-    const { user } = useAuthValue();
-
-    const { insertDocument, response } = useInsertDocument("boards");
 
 
     const deleteColumnFromBoard = (column) => {
@@ -75,16 +69,17 @@ const AddBoard = forwardRef((props, ref) => {
         if (formError) return
 
 
-        insertDocument({
+        const newBoard = {
             boardName,
-            boardId: Math.random() * (99 - 1) + 1 + Math.random() * (99 - 1) + 1,
+            id: Math.random() * (99 - 1) + 1 + Math.random() * (99 - 1) + 1,
             columns,
-            userId: user.uid,
-        });
+        };
+
+        localStorage.setItem(newBoard.id, JSON.stringify(newBoard))
+
+        setAvailableBoards([...availableBoards, newBoard]);
 
         ref.current.classList.toggle('show')
-
-        alert('Quadro criado com sucesso')
     };
 
 

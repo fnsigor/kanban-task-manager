@@ -2,65 +2,72 @@ import './style/index.scss'
 import { useEffect, useState, useRef } from "react"
 import Navbar from "./components/Navbar/Navbar"
 import Sidebar from "./components/Sidebar/Sidebar"
-import { useAuthentication } from "./hooks/useAuthentication"
-import { onAuthStateChanged } from "firebase/auth"
+
 import { Outlet } from 'react-router-dom'
-import { AuthProvider } from './context/AuthContext'
+
 import AddBoard from './component popovers/AddBoard/AddBoard'
 import AddTask from './component popovers/AddTask/AddTask'
 import EditTask from './component popovers/EditTask,jsx/EditTask'
 import { EditTaskPopupHTMLProvider } from './context/editTaskHTMLContext'
 import { SelectedTaskProvider } from './context/selectedTaskContext'
 import { SelectedBoardProvider } from './context/selectedBoardContext'
+import { SelectedColumnProvider } from './context/selectedColumnContext'
+import { DOMElementsProvider } from './context/DOMElementsContext'
 
 function Root() {
 
-  const [user, setUser] = useState()
+
+	const addBoardPopup = useRef()
+	const addTaskPopup = useRef()
+	const editTaskPopup = useRef()
+
+	const [availableBoards, setAvailableBoards] = useState([])
+
+	useEffect(() => {
+		const allStorageBoards = Object.keys(localStorage).map(boardid => {
+			const boardJSON = localStorage.getItem(boardid)
+			return JSON.parse(boardJSON)
+		})
+
+		setAvailableBoards(allStorageBoards)
+	}, [])
 
 
-  const { auth } = useAuthentication()
-
-  const addBoardPopup = useRef()
-  const addTaskPopup = useRef()
-  const editTaskPopup = useRef()
-
-
-  useEffect(() => {
-
-    onAuthStateChanged(auth, (user) => {
-      setUser(user)
-    })
-
-  }, [auth])
+	return (
 
 
 
+		<div id="app">
+			<SelectedBoardProvider>
+				<SelectedColumnProvider>
+					<EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
 
-  return (
+						<SelectedTaskProvider>
 
-    <AuthProvider value={{ user }}>
+							<DOMElementsProvider addTaskPopup={addTaskPopup}>
 
-      <div id="app">
-        <SelectedBoardProvider>
-          <EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
-            <SelectedTaskProvider>
-              <Sidebar addBoardPopup={addBoardPopup} userid={user?.uid} />
-              <div>
-                <Navbar addTaskPopup={addTaskPopup} />
-                <Outlet />
-              </div>
+								<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} />
+								<div>
+									<Navbar addTaskPopup={addTaskPopup} />
+									<Outlet />
+								</div>
 
-              <AddTask ref={addTaskPopup} userid={user?.uid} />
-              <AddBoard ref={addBoardPopup} />
-              <EditTask ref={editTaskPopup} />
-              
-            </SelectedTaskProvider>
-          </EditTaskPopupHTMLProvider>
-        </SelectedBoardProvider>
-      </div>
+								<AddTask ref={addTaskPopup} />
+								<AddBoard ref={addBoardPopup} setAvailableBoards={setAvailableBoards} availableBoards={availableBoards} />
+								<EditTask ref={editTaskPopup} />
 
-    </AuthProvider>
-  )
+							</DOMElementsProvider>
+
+						</SelectedTaskProvider>
+
+					</EditTaskPopupHTMLProvider>
+				</SelectedColumnProvider>
+
+			</SelectedBoardProvider>
+		</div>
+
+
+	)
 }
 
 export default Root
