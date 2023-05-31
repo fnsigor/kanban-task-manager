@@ -1,18 +1,24 @@
-import React, { useContext, useRef } from 'react'
+import React, { useContext, useRef, useState } from 'react'
 
 import style from './column.module.scss'
 import { Task } from '../Task/Task'
 import useEditTaskHTML from '../../hooks/useEditTaskHTML'
 import useColumnContext from '../../hooks/useColumnContext'
 import { DOMElementsContext } from '../../context/DOMElementsContext'
+import useBoardContext from '../../hooks/useBoardContext'
+import { updateBoard } from '../../utils/updateBoard'
 
 function Column({ name, tasks, columnId }) {
 
   const { editTaskElement } = useEditTaskHTML()
 
-  const { setSelectedColumn } = useColumnContext()
+  const { selectedColumn, setSelectedColumn } = useColumnContext()
+
+  const { selectedBoard, setSelectedBoard } = useBoardContext()
 
   const btAddTask = useRef()
+
+  const [newColumnName, setNewColumnName] = useState(name)
 
 
   const toggleClass = () => {
@@ -22,9 +28,41 @@ function Column({ name, tasks, columnId }) {
   const { DOMElements: addTaskPopup } = useContext(DOMElementsContext)
 
 
+  const updateColumnName = (e) => {
+    //clonar coluna
+    const renamedColumn = selectedBoard.columns.find(column => column.id == columnId)
+
+    renamedColumn.name = newColumnName
+
+    const updatedColumns = selectedBoard.columns.map(column => {
+      if (column.id == columnId) {
+        return renamedColumn
+      } else {
+        return column
+      }
+    })
+
+
+    const updatedBoard = {
+      boardName: selectedBoard.boardName,
+      id: selectedBoard.id,
+      columns: updatedColumns,
+    }
+
+    updateBoard(updatedBoard, setSelectedBoard);
+
+  }
+
+
+
   return (
     <li className={style.columnContainer}>
-      <h4 className='column-title' >{name}</h4>
+      <input className='column-title'
+        type='text'
+        value={newColumnName}
+        onChange={(e) => setNewColumnName(e.target.value)}
+        onBlur={updateColumnName}
+      />
 
       <ul>
         {tasks.map((task, index) => (

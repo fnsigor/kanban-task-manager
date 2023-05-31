@@ -6,7 +6,6 @@ Ordem de tasks
 
 > drag and drop pra mudar tarefa de coluna
 
-
 > criar mais subtasks nas tarefas ja criadas
 
 > CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
