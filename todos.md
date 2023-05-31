@@ -1,26 +1,22 @@
-FEATURES TO DO
+Ordem de tasks
 
->drag and drop pra mudar tarefa de coluna
+> EDITAR NOME DE COLUNA
 
-> EXCLUIR TAREFAS
+> EDITAR NOME DE BOARD
+
+> drag and drop pra mudar tarefa de coluna
+
+
+> criar mais subtasks nas tarefas ja criadas
+
+> CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
 
 > THEME SWITCH
 
 >ADICIONAR ALGO OU SE LIVRAR DA HOMEPAGE
 
-> CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
 
 EXTRAS (NÃO TEM NO PROJETO ORIGINAL)
 
-
-> ADICIONAR SUBTAREFAS 
-
-> EDITAR NOME DE BOARD
-
-> EDITAR NOME DE COLUNA
-
 > Editar nome de subtask
 
-> criar mais subtasks
-
-FIX: Novas colunas recem criadas não aparecem no componente de criar task. mudar pra criação de task igual trello pode evitar isso

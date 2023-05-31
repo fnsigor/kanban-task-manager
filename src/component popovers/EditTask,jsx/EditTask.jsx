@@ -4,6 +4,7 @@ import useBoardContext from '../../hooks/useBoardContext'
 
 import { useParams } from 'react-router-dom'
 import { updateBoard } from '../../utils/updateBoard'
+import useColumnContext from '../../hooks/useColumnContext'
 
 const EditTask = forwardRef(({ userid }, ref) => {
 
@@ -14,7 +15,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
     const [subtasks, setSubtasks] = useState([])
 
 
-    const {selectedBoard, setSelectedBoard} = useBoardContext()
+    const { selectedBoard, setSelectedBoard } = useBoardContext()
 
 
     const { boardid } = useParams()
@@ -86,6 +87,36 @@ const EditTask = forwardRef(({ userid }, ref) => {
         }))
     }
 
+    const deleteTask = () => {
+
+        let editedColumn = selectedBoard.columns.find(column => column.id == selectedTaskData.columnId)
+
+        editedColumn = {
+            id: editedColumn.id,
+            tasks: editedColumn.tasks.filter(task => task.id !== selectedTaskData.id),
+            name: editedColumn.name
+        }
+
+        const updatedColumns = selectedBoard.columns.map(column => {
+            if (column.id == editedColumn.id) {
+                return editedColumn
+            } else {
+                return column
+            }
+        })
+
+
+        const updatedBoard = {
+            boardName: selectedBoard.boardName,
+            id: selectedBoard.id,
+            columns: updatedColumns,
+        }
+
+        updateBoard(updatedBoard, setSelectedBoard);
+
+        ref.current.classList.toggle('show')
+
+    }
 
     const deleteSubtask = (deletedSubtaskId) => {
         const newSubtasks = subtasks.filter(subtask => subtask.id != deletedSubtaskId)
@@ -101,7 +132,9 @@ const EditTask = forwardRef(({ userid }, ref) => {
         }}>
 
             <div className='popupForm EditTask'>
-                <span className="closePopup">option</span>
+
+                <span className="closePopup" onClick={deleteTask}>EXCLUIR TAREFA</span>
+
                 <form >
 
                     <div>
@@ -136,9 +169,9 @@ const EditTask = forwardRef(({ userid }, ref) => {
                                         name={subtask.id}
                                         id={subtask.id}
                                         placeholder={subtask.name}
-                                  
+
                                         onChange={(event) => handleCheckboxChange(event, index)}
-                                        
+
                                     />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 
