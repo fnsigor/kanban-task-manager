@@ -1,10 +1,9 @@
 Ordem de tasks
 
-> EDITAR NOME DE COLUNA
+> drag and drop pra p mudar ordem de coluna
 
 > EDITAR NOME DE BOARD
 
-> drag and drop pra mudar tarefa de coluna
 
 > criar mais subtasks nas tarefas ja criadas
 

@@ -13,6 +13,7 @@ import { SelectedTaskProvider } from './context/selectedTaskContext'
 import { SelectedBoardProvider } from './context/selectedBoardContext'
 import { SelectedColumnProvider } from './context/selectedColumnContext'
 import { DOMElementsProvider } from './context/DOMElementsContext'
+import { DNDTargetProvider } from './context/DNDTargetContext'
 
 function Root() {
 
@@ -49,7 +50,9 @@ function Root() {
 								<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} />
 								<div>
 									<Navbar addTaskPopup={addTaskPopup} />
-									<Outlet />
+									<DNDTargetProvider>
+										<Outlet />
+									</DNDTargetProvider>
 								</div>
 
 								<AddTask ref={addTaskPopup} />
