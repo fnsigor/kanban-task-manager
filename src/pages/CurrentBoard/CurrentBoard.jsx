@@ -57,64 +57,108 @@ function CurrentBoard() {
         if (!result.destination) return;
 
 
-        const selectedItem = selectedBoard.columns.find(column => column.id === result.source.droppableId).tasks[result.source.index]
-        
-        const updatedColumns = selectedBoard.columns.map(column => {
-            if (column.id === result.source.droppableId) {
-                column.tasks.splice(result.source.index, 1)
+        if (result.type === 'listContent') {
+            const selectedItem = selectedBoard.columns.find(column => column.id === result.source.droppableId).tasks[result.source.index]
+
+            const updatedColumns = selectedBoard.columns.map(column => {
+                if (column.id === result.source.droppableId) {
+                    column.tasks.splice(result.source.index, 1)
+                }
+
+                return column
+            })
+
+            updatedColumns.map(column => {
+                if (column.id === result.destination.droppableId) {
+                    column.tasks.splice(result.destination.index, 0, selectedItem)
+                }
+
+                return column
+            })
+
+            const updatedBoard = {
+                boardName: selectedBoard.boardName,
+                id: selectedBoard.id,
+                columns: updatedColumns
             }
 
-            return column
-        })
+            updateBoard(updatedBoard, setSelectedBoard);
+        } else {
+            const updatedColumns = selectedBoard.columns
+			const [reorderedItem] = selectedBoard.columns.splice(result.source.index, 1);
+			updatedColumns.splice(result.destination.index, 0, reorderedItem);
 
-        updatedColumns.map(column => {
-            if (column.id === result.destination.droppableId) {
-                column.tasks.splice(result.destination.index, 0, selectedItem)
+
+            
+            const updatedBoard = {
+                boardName: selectedBoard.boardName,
+                id: selectedBoard.id,
+                columns: updatedColumns
             }
 
-            return column
-        })
-
-        const updatedBoard = {
-            boardName: selectedBoard.boardName,
-            id: selectedBoard.id,
-            columns: updatedColumns
+			updateBoard(updatedBoard, setSelectedBoard);
         }
-
-        updateBoard(updatedBoard, setSelectedBoard);
 
     }
 
 
+    const DropzoneDroppable = ({ children, ...props }) => {
+        const [enabled, setEnabled] = useState(false);
+        useEffect(() => {
+            const animation = requestAnimationFrame(() => setEnabled(true));
+            return () => {
+                cancelAnimationFrame(animation);
+                setEnabled(false);
+            };
+        }, []);
+        if (!enabled) {
+            return null;
+        }
+        return <Droppable {...props}>{children}</Droppable>;
+    };
+
+
+
+
 
     return (
+        <DragDropContext onDragEnd={handleOnDragEnd} >
 
-        <DragDropContext onDragEnd={handleOnDragEnd}>
+            <DropzoneDroppable droppableId={'listDropzoneDroppable'} type='list' direction="horizontal" >
+                {(provided) => (
+                    <ul className={style.columnList}  {...provided.droppableProps} ref={provided.innerRef}>
 
-            <ul className={style.columnList}>
+                        {selectedBoard && selectedBoard.columns.map((column, index) => (
+                            <Column
+                                name={column.name}
+                                columnindex={index}
+                                tasks={column.tasks}
+                                key={column.id}
+                                columnId={column.id}
+                            />
+                        ))}
 
-                {selectedBoard
-                    ? (
-                        selectedBoard.columns.map((column, index) => (<Column name={column.name} columnindex={index} tasks={column.tasks} key={column.id} columnId={column.id} />))
-                    )
-                    : (<p>loading data</p>)
-                }
+                        {provided.placeholder}
 
-                <li className={style.newColumnLi}>
-                    <form className={style.newColumnLi} onSubmit={createColumnSubmit}>
-                        <input
-                            type="text"
-                            placeholder="+ Adicionar outra coluna"
-                            className='task-title'
-                            onFocus={() => btAddColumn.current.style.display = 'initial'}
-                            onBlur={() => setTimeout(() => { btAddColumn.current.style.display = 'none' }, 100)}
-                            onChange={(e) => setColumnName(e.target.value)}
-                            value={columnName}
-                        />
-                        <button ref={btAddColumn} >Criar coluna</button>
-                    </form>
-                </li>
-            </ul>
+                        <li className={style.newColumnLi}>
+                            <form className={style.newColumnLi} onSubmit={createColumnSubmit}>
+                                <input
+                                    type="text"
+                                    placeholder="+ Adicionar outra coluna"
+                                    className='task-title'
+                                    onFocus={() => btAddColumn.current.style.display = 'initial'}
+                                    onBlur={() => setTimeout(() => { btAddColumn.current.style.display = 'none' }, 100)}
+                                    onChange={(e) => setColumnName(e.target.value)}
+                                    value={columnName}
+                                />
+                                <button ref={btAddColumn} >Criar coluna</button>
+                            </form>
+                        </li>
+
+                    </ul>
+                )}
+            </DropzoneDroppable>
+
         </DragDropContext>
     )
 }

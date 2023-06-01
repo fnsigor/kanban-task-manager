@@ -9,7 +9,7 @@ import useBoardContext from '../../hooks/useBoardContext'
 import { updateBoard } from '../../utils/updateBoard'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 
-function Column({ name, tasks, columnId }) {
+function Column({ name, tasks, columnId, columnindex }) {
 
   const { editTaskElement } = useEditTaskHTML()
 
@@ -73,45 +73,52 @@ function Column({ name, tasks, columnId }) {
 
 
   return (
-    <li className={style.columnContainer}>
-      <input className='column-title'
-        type='text'
-        value={newColumnName}
-        onChange={(e) => setNewColumnName(e.target.value)}
-        onBlur={updateColumnName}
-      />
 
-      <StrictModeDroppable droppableId={columnId}>
-        {(provided) => (
-          <ul {...provided.droppableProps} ref={provided.innerRef}>
-            {tasks.map((task, index) => (
-              <Task task={task} key={'task' + index} toggleClass={toggleClass} columnId={columnId} index={index} />
-            ))}
+    <Draggable draggableId={columnId + 'draggableColumn'} key={columnId + 'draggableColumn'} index={columnindex}>
+      {(provided) => (
 
-            {provided.placeholder}
+        <li className={style.columnContainer} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+          <input className='column-title'
+            type='text'
+            value={newColumnName}
+            onChange={(e) => setNewColumnName(e.target.value)}
+            onBlur={updateColumnName}
+          />
 
-            <li className='addTaskLi'>
-              <div>
-                <input
-                  type="text"
-                  placeholder="+ Add New Task"
-                  onFocus={() => btAddTask.current.style.display = 'initial'}
-                  onBlur={() => setTimeout(() => { btAddTask.current.style.display = 'none' }, 100)}
-                />
-                <button
-                  ref={btAddTask}
-                  onClick={(e) => {
-                    addTaskPopup.current.classList.toggle('show')
-                    setSelectedColumn(columnId)
-                  }} >
-                  Criar tarefa
-                </button>
-              </div>
-            </li>
-          </ul>
-        )}
-      </StrictModeDroppable>
-    </li>
+          <StrictModeDroppable droppableId={columnId}  type='listContent'>
+            {(provided) => (
+              <ul {...provided.droppableProps} ref={provided.innerRef}>
+                {tasks.map((task, index) => (
+                  <Task task={task} key={'task' + index} toggleClass={toggleClass} columnId={columnId} index={index} />
+                ))}
+
+                {provided.placeholder}
+
+                <li className='addTaskLi'>
+                  <div>
+                    <input
+                      type="text"
+                      placeholder="+ Add New Task"
+                      onFocus={() => btAddTask.current.style.display = 'initial'}
+                      onBlur={() => setTimeout(() => { btAddTask.current.style.display = 'none' }, 100)}
+                    />
+                    <button
+                      ref={btAddTask}
+                      onClick={(e) => {
+                        addTaskPopup.current.classList.toggle('show')
+                        setSelectedColumn(columnId)
+                      }} >
+                      Criar tarefa
+                    </button>
+                  </div>
+                </li>
+              </ul>
+            )}
+          </StrictModeDroppable>
+        </li>
+
+      )}
+    </Draggable>
   )
 }
 
