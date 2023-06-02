@@ -2,19 +2,19 @@ Ordem de tasks
 
 > CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
 
+> Verificações
 
-> EDITAR NOME DE BOARD
+> feature: excluir coluna
 
+> feature: criar mais subtasks nas tarefas ja criadas
 
-> criar mais subtasks nas tarefas ja criadas
+>feature: EDITAR NOME DE BOARD
 
+>feature: ADICIONAR ALGO OU SE LIVRAR DA HOMEPAGE
 
 > THEME SWITCH
 
->ADICIONAR ALGO OU SE LIVRAR DA HOMEPAGE
-
-
 EXTRAS (NÃO TEM NO PROJETO ORIGINAL)
 
-> Editar nome de subtask
+> feature: Editar nome de subtask
 

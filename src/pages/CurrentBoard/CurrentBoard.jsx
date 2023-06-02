@@ -5,7 +5,7 @@ import Column from '../../components/Column/Column';
 import { getUserBoards } from '../../utils/getBoard';
 import useBoardContext from '../../hooks/useBoardContext';
 import { updateBoard } from '../../utils/updateBoard';
-import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 
 function CurrentBoard() {
 
@@ -14,15 +14,23 @@ function CurrentBoard() {
     const btAddColumn = useRef()
     const { selectedBoard, setSelectedBoard } = useBoardContext()
 
-
     useEffect(() => { //pra pegar o board selecionado na sidebar
         getUserBoards(setSelectedBoard, 'one', boardid)
     }, [boardid])
 
 
-    useEffect(() => { //sempre que atualizar o estado do board,manda a nova versão dele pro localStorage
+    useEffect(() => {
+        const handleBeforeUnload = (event) => {
 
-    }, [])
+            localStorage.setItem(selectedBoard.id, JSON.stringify(selectedBoard))
+        };
+
+        window.addEventListener('beforeunload', handleBeforeUnload);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+    });
 
 
     const createColumnSubmit = (e) => {
@@ -82,21 +90,25 @@ function CurrentBoard() {
                 columns: updatedColumns
             }
 
-            updateBoard(updatedBoard, setSelectedBoard);
+            selectedBoard(updatedBoard)
+
+
         } else {
             const updatedColumns = selectedBoard.columns
-			const [reorderedItem] = selectedBoard.columns.splice(result.source.index, 1);
-			updatedColumns.splice(result.destination.index, 0, reorderedItem);
+            const [reorderedItem] = selectedBoard.columns.splice(result.source.index, 1);
+            updatedColumns.splice(result.destination.index, 0, reorderedItem);
 
 
-            
+
             const updatedBoard = {
                 boardName: selectedBoard.boardName,
                 id: selectedBoard.id,
                 columns: updatedColumns
             }
 
-			updateBoard(updatedBoard, setSelectedBoard);
+            selectedBoard(updatedBoard)
+
+
         }
 
     }
