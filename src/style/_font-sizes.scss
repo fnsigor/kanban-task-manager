@@ -1,32 +1,61 @@
 // ====================ARQUIVO SOMENTE PARA FONTS
 
+:root{
+    font-size: 62.5%;
+    font-family: 'Rubik', sans-serif;
+}
+
 .app-title{
     font-size: 1.8rem;
+    font-weight: 600;
 }
 
 
 .board-title{
     font-size: 2.4rem;
+    font-weight: 600;
 }
 
 
 .sidebar-board-title{
     font-size: 1.4rem;
+    font-weight: 400;
 }
 
 .column-title{
-    font-size: 1.4rem;
+    font-size: 1.6rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #fff;
+    margin-bottom: 2.5rem;
+    width: 100%;
+    padding-bottom: 2px;
+    border-bottom: 1px solid rgba(255, 0, 0, 0);
+    outline: none;
+
+    &:focus{
+        border-bottom: 1px solid #444;
+    }
 }
 
 .task-title{
     font-size: 1.4rem;
+    font-weight: 400;
 }
 
 .subtasks-status{
     font-size: 1.2rem;
+    font-weight: 400;
 }
 
 .bt-add-task{
     font-size: 1.8rem;
+    font-weight: 400;
 }
 
+
+.errorMessage{
+    color: #E71D36;
+    font-size: 1.4rem;
+    margin-block: .1rem .6rem;
+}

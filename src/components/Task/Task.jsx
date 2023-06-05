@@ -1,7 +1,6 @@
 
 
 import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
-import style from './task.module.scss'
 import { Draggable } from 'react-beautiful-dnd';
 
 export function Task({ task, toggleClass, columnId, index }) {
@@ -18,7 +17,7 @@ export function Task({ task, toggleClass, columnId, index }) {
             key={task.id}
             index={index}>
             {(provided) => (
-                <li className={style.taskContainer}
+                <li className='taskContainer'
                     onClick={() => {
                         setSelectedTaskData({ ...task, columnId })
                         toggleClass()
@@ -27,9 +26,6 @@ export function Task({ task, toggleClass, columnId, index }) {
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
                     draggable="true"
-                    // onMouseEnter={()=>setIsTaskDNDTarget(true)}
-                    // onMouseLeave={()=>setIsTaskDNDTarget(false)}
-                   
                 >
                     <h6 className='task-title'>{task.name}</h6>
                     {task.subtasks.length > 0 && (

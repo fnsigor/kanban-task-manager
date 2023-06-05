@@ -1,125 +1,160 @@
 import React, { useContext, useRef, useState, useEffect } from 'react'
-
-import style from './column.module.scss'
 import { Task } from '../Task/Task'
 import useEditTaskHTML from '../../hooks/useEditTaskHTML'
 import useColumnContext from '../../hooks/useColumnContext'
 import { DOMElementsContext } from '../../context/DOMElementsContext'
 import useBoardContext from '../../hooks/useBoardContext'
-import { updateBoard } from '../../utils/updateBoard'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
+import { useNewTaskName } from '../../hooks/useNewTaskName'
+import { useParams } from 'react-router-dom'
+import { updateBoard } from '../../utils/updateBoard'
 
 function Column({ name, tasks, columnId, columnindex }) {
 
-  const { editTaskElement } = useEditTaskHTML()
+	const { editTaskElement } = useEditTaskHTML()
+	const { selectedColumn, setSelectedColumn } = useColumnContext()
+	const { selectedBoard, setSelectedBoard } = useBoardContext()
+	const { DOMElements: addTaskPopup } = useContext(DOMElementsContext)
+	const { setNewTaskName } = useNewTaskName()
+	const btAddTask = useRef()
+	const taskNameInput = useRef()
 
-  const { selectedColumn, setSelectedColumn } = useColumnContext()
-
-  const { selectedBoard, setSelectedBoard } = useBoardContext()
-
-  const btAddTask = useRef()
-
-  const [newColumnName, setNewColumnName] = useState(name)
-
-  const { DOMElements: addTaskPopup } = useContext(DOMElementsContext)
-
-  const toggleClass = () => {
-    editTaskElement.current.classList.toggle('show')
-  }
+	const columnNameInput = useRef()
 
 
 
-  const updateColumnName = (e) => {
-    //clonar coluna
-    const renamedColumn = selectedBoard.columns.find(column => column.id == columnId)
-
-    renamedColumn.name = newColumnName
-
-    const updatedColumns = selectedBoard.columns.map(column => {
-      if (column.id == columnId) {
-        return renamedColumn
-      } else {
-        return column
-      }
-    })
+	const toggleClass = () => {
+		editTaskElement.current.classList.toggle('show')
+	}
 
 
-    const updatedBoard = {
-      boardName: selectedBoard.boardName,
-      id: selectedBoard.id,
-      columns: updatedColumns,
-    }
-
-    updateBoard(updatedBoard, setSelectedBoard);
-
-  }
-
-
-  const StrictModeDroppable = ({ children, ...props }) => {
-    const [enabled, setEnabled] = useState(false);
-    useEffect(() => {
-      const animation = requestAnimationFrame(() => setEnabled(true));
-      return () => {
-        cancelAnimationFrame(animation);
-        setEnabled(false);
-      };
-    }, []);
-    if (!enabled) {
-      return null;
-    }
-    return <Droppable {...props}>{children}</Droppable>;
-  };
+	const StrictModeDroppable = ({ children, ...props }) => {
+		const [enabled, setEnabled] = useState(false);
+		useEffect(() => {
+			const animation = requestAnimationFrame(() => setEnabled(true));
+			return () => {
+				cancelAnimationFrame(animation);
+				setEnabled(false);
+			};
+		}, []);
+		if (!enabled) {
+			return null;
+		}
+		return <Droppable {...props}>{children}</Droppable>;
+	};
 
 
+	const showCreateTaskPopup = () => {
+		setNewTaskName(taskNameInput.current.value)
+		addTaskPopup.current.classList.toggle('show')
+		setSelectedColumn(columnId)
+	}
 
-  return (
 
-    <Draggable draggableId={columnId + 'draggableColumn'} key={columnId + 'draggableColumn'} index={columnindex}>
-      {(provided) => (
+	function ColumnTitle() {
 
-        <li className={style.columnContainer} {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
-          <input className='column-title'
-            type='text'
-            value={newColumnName}
-            onChange={(e) => setNewColumnName(e.target.value)}
-            onBlur={updateColumnName}
-          />
+		const [innerInputValue, setInnerInputValue] = useState(name)
 
-          <StrictModeDroppable droppableId={columnId}  type='listContent'>
-            {(provided) => (
-              <ul {...provided.droppableProps} ref={provided.innerRef}>
-                {tasks.map((task, index) => (
-                  <Task task={task} key={'task' + index} toggleClass={toggleClass} columnId={columnId} index={index} />
-                ))}
+		function handleInputChange(columnName) { //salva no banco no onchange
 
-                {provided.placeholder}
+			console.log(columnName)
 
-                <li className='addTaskLi'>
-                  <div>
-                    <input
-                      type="text"
-                      placeholder="+ Add New Task"
-                      onFocus={() => btAddTask.current.style.display = 'initial'}
-                      onBlur={() => setTimeout(() => { btAddTask.current.style.display = 'none' }, 100)}
-                    />
-                    <button
-                      ref={btAddTask}
-                      onClick={(e) => {
-                        addTaskPopup.current.classList.toggle('show')
-                        setSelectedColumn(columnId)
-                      }} >
-                      Criar tarefa
-                    </button>
-                  </div>
-                </li>
-              </ul>
-            )}
-          </StrictModeDroppable>
-        </li>
+			setInnerInputValue(columnName)
 
-      )}
-    </Draggable>
-  )
+			const updatedColumns = selectedBoard.columns
+
+			updatedColumns.splice(columnindex, 1, {
+				name: columnName,
+				tasks: selectedBoard.columns[columnindex].tasks,
+				id: selectedBoard.columns[columnindex].id
+			})
+
+			const updatedBoard = {
+				boardName: selectedBoard.boardName,
+				id: selectedBoard.id,
+				columns: updatedColumns
+			}
+
+			localStorage.setItem(selectedBoard.id, JSON.stringify(updatedBoard))
+		}
+
+
+		return (
+			<input className='column-title'
+				type='text'
+				value={innerInputValue}
+				onChange={(e) => handleInputChange(e.target.value)}
+				ref={columnNameInput}
+			/>
+		)
+	}
+
+
+	function CreateTaskInput() {
+
+
+		const [innerInputValue, setInnerInputValue] = useState("")
+
+		return (
+			<li className='addTaskLi'>
+				<input
+					value={innerInputValue}
+					onChange={e => setInnerInputValue(e.target.value)}
+					ref={taskNameInput}
+					type="text"
+					placeholder="+ Add New Task"
+					onFocus={() => btAddTask.current.style.display = 'initial'}
+					onBlur={() => {
+						setTimeout(() => {
+							btAddTask.current.style.display = 'none'
+							setInnerInputValue("")
+						}, 100)
+					}}
+				/>
+				<button
+					disabled={innerInputValue.length < 1}
+					className='purpleButton large'
+					ref={btAddTask}
+					onClick={()=>{
+						showCreateTaskPopup()
+						setNewTaskName(innerInputValue)
+					}}
+				>
+					Criar tarefa
+				</button>
+
+			</li>
+		)
+	}
+
+	return (
+
+		<Draggable draggableId={columnId + 'draggableColumn'} key={columnId} index={columnindex}>
+			{(provided) => (
+				<li className='taskColumn' {...provided.draggableProps} {...provided.dragHandleProps} ref={provided.innerRef}>
+
+					<ColumnTitle />
+
+
+					<StrictModeDroppable droppableId={columnId} type='listContent'>
+						{(provided) => (
+							<ul {...provided.droppableProps} ref={provided.innerRef} className='taskList'>
+								{tasks.map((task, index) => (
+									<Task task={task} key={task.id} toggleClass={toggleClass} columnId={columnId} index={index} />
+								))}
+
+								{provided.placeholder}
+
+								<CreateTaskInput />
+
+							</ul>
+						)}
+					</StrictModeDroppable>
+				</li>
+
+			)}
+		</Draggable>
+	)
 }
 
 export default Column

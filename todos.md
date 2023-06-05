@@ -2,9 +2,13 @@ Ordem de tasks
 
 > CSS COMPLETO E RESPONSIVO (ADD ANIMAÇÃO AO ABRIR POPUP)
 
+> feature: excluir coluna
+
+>feature: excluir  board
+
+
 > Verificações
 
-> feature: excluir coluna
 
 > feature: criar mais subtasks nas tarefas ja criadas
 

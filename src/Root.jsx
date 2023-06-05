@@ -14,6 +14,7 @@ import { SelectedBoardProvider } from './context/selectedBoardContext'
 import { SelectedColumnProvider } from './context/selectedColumnContext'
 import { DOMElementsProvider } from './context/DOMElementsContext'
 import { DNDTargetProvider } from './context/DNDTargetContext'
+import { NewTaskNameProvider } from './context/newTaskName'
 
 function Root() {
 
@@ -41,29 +42,31 @@ function Root() {
 		<div id="app">
 			<SelectedBoardProvider>
 				<SelectedColumnProvider>
-					<EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
+					<NewTaskNameProvider>
+						<EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
 
-						<SelectedTaskProvider>
+							<SelectedTaskProvider>
 
-							<DOMElementsProvider addTaskPopup={addTaskPopup}>
+								<DOMElementsProvider addTaskPopup={addTaskPopup}>
 
-								<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} />
-								<div>
-									<Navbar addTaskPopup={addTaskPopup} />
-									<DNDTargetProvider>
-										<Outlet />
-									</DNDTargetProvider>
-								</div>
+									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} />
+									<div className="outletNavbarContainer">
+										<Navbar addTaskPopup={addTaskPopup} />
+										<DNDTargetProvider>
+											<Outlet />
+										</DNDTargetProvider>
+									</div>
 
-								<AddTask ref={addTaskPopup} />
-								<AddBoard ref={addBoardPopup} setAvailableBoards={setAvailableBoards} availableBoards={availableBoards} />
-								<EditTask ref={editTaskPopup} />
+									<AddTask ref={addTaskPopup} />
+									<AddBoard ref={addBoardPopup} setAvailableBoards={setAvailableBoards} availableBoards={availableBoards} />
+									<EditTask ref={editTaskPopup} />
 
-							</DOMElementsProvider>
+								</DOMElementsProvider>
 
-						</SelectedTaskProvider>
+							</SelectedTaskProvider>
 
-					</EditTaskPopupHTMLProvider>
+						</EditTaskPopupHTMLProvider>
+					</NewTaskNameProvider>
 				</SelectedColumnProvider>
 
 			</SelectedBoardProvider>

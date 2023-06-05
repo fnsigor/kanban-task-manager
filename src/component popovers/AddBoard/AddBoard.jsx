@@ -1,10 +1,13 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef, useEffect, useRef, useState } from 'react'
+import { ErrorMessage } from "@hookform/error-message";
+import { useForm } from "react-hook-form";
 
-const AddBoard = forwardRef(({setAvailableBoards, availableBoards }, ref) => {
 
 
-    const [formError, setFormError] = useState("");
-    const [boardName, setBoardName] = useState('')
+
+const AddBoard = forwardRef(({ setAvailableBoards, availableBoards }, ref) => {
+
+    const [boardName, setBoardName] = useState('New board')
     const [columns, setColumns] = useState([
         {
             name: 'To do',
@@ -22,6 +25,13 @@ const AddBoard = forwardRef(({setAvailableBoards, availableBoards }, ref) => {
             id: 'done3'
         },
     ])
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        criteriaMode: "all"
+    });
 
 
 
@@ -40,34 +50,13 @@ const AddBoard = forwardRef(({setAvailableBoards, availableBoards }, ref) => {
         setColumns([...columns, newColumn])
     }
 
-    const updateColumnName = (i, event) => {
+    const updateColumnName = (index, event) => {
         let currentColumnState = columns
-        currentColumnState[i].name = event.target.value
+        currentColumnState[index].name = event.target.value
         setColumns(currentColumnState)
     }
 
-    const CreateBoardSubmit = (e) => {
-        e.preventDefault();
-
-        setFormError("");
-
-
-
-        if (boardName.trim() === '') { //verifica se tem nome do board
-            setFormError('Preencha o nome do quadro')
-        }
-
-
-        //remove colunas sem nome
-        columns.forEach(column => {
-            if (column.name.trim() === '') {
-                setFormError('Existem colunas sem nome')
-            }
-        })
-
-
-        if (formError) return
-
+    const createBoardSubmit = (e) => {
 
         const newBoard = {
             boardName,
@@ -80,39 +69,128 @@ const AddBoard = forwardRef(({setAvailableBoards, availableBoards }, ref) => {
         setAvailableBoards([...availableBoards, newBoard]);
 
         ref.current.classList.toggle('show')
+
+        resetForm()
+
     };
+
+    const inputsContainer = useRef()
+
+    const resetForm = () => {
+        setBoardName('New board')
+
+        setColumns([
+            {
+                name: 'To do',
+                tasks: [],
+                id: 'todo1'
+            },
+            {
+                name: 'Doing',
+                tasks: [],
+                id: 'doing2'
+            },
+            {
+                name: 'Done',
+                tasks: [],
+                id: 'done3'
+            },
+        ])
+
+        inputsContainer.current.lastElementChild.previousElementSibling.previousElementSibling.firstElementChild.firstElementChild.value = "To do"
+        inputsContainer.current.lastElementChild.previousElementSibling.firstElementChild.firstElementChild.value = "Doing"
+        inputsContainer.current.lastElementChild.firstElementChild.firstElementChild.value = "Done"
+    }
+
 
 
     return (
-        <div className="shadow" ref={ref}>
+        <div className="shadow" ref={ref} onClick={(e) => {
+            if (e.target.classList[0] === 'shadow') {
+                ref.current.classList.toggle('show')
+                resetForm()
+            }
+        }} >
             <div className='popupForm'>
                 <h4>Create New Board</h4>
-                <span className="closePopup" onClick={() => ref.current.classList.toggle('show')}>cancelar</span>
-                <form onSubmit={CreateBoardSubmit}>
+                <form onSubmit={handleSubmit(() => createBoardSubmit())}>
 
                     <div>
-                        <label>Board Name</label>
-                        <input type="text" name="" id="" placeholder='board name'
-                            onChange={(e) => setBoardName(e.target.value)}
+                        <label htmlFor="boardname">Board Name</label>
+                        <input
+                            type="text"
+                            name="boardname"
+                            id="boardname"
+                            placeholder='board name'
+                            value={boardName}
+                            {...register("boardname", {
+                                onChange: e => setBoardName(e.target.value),
+                                required: "Required input.",
+                                maxLength: {
+                                    value: 20,
+                                    message: "Maximum 20 characters."
+                                }
+                            })}
+                        />
+
+                        <ErrorMessage
+                            errors={errors}
+                            name="boardname"
+                            render={({ messages }) => {
+                                return messages
+                                    ? Object.entries(messages).map(([type, message]) => (
+                                        <p className='errorMessage' key={type}>{message}</p>
+                                    ))
+                                    : null;
+                            }}
                         />
                     </div>
 
-                    <div className='boardColumns'>
+                    <div ref={inputsContainer}>
+                        <label>Board Columns</label>
                         {
                             columns.map((column, index) => (
-                                <div key={column.name + index}>
-                                    <input type="text" name="" id="" defaultValue={column.name} onChange={(event) => updateColumnName(index, event)} />
-                                    <span onClick={() => deleteColumnFromBoard(column)}>excluir</span>
+                                <div key={column.id} className='boardColumns' >
+                                    <div className='inputAndDeleteDiv' >
+                                        <input
+                                            type="text"
+                                            defaultValue={column.name}
+                                            {...register(`columnname-${column.id}`, {
+                                                onChange: e => updateColumnName(index, e),
+                                                required: "Required input.",
+                                                maxLength: {
+                                                    value: 15,
+                                                    message: "Maximum 15 characters."
+                                                }
+                                            })}
+                                        />
+
+                                        <img title='Remove board' onClick={() => deleteColumnFromBoard(column)} src="./icon-close.svg" />
+                                    </div>
+
+                                    <ErrorMessage
+                                        errors={errors}
+                                        name={`columnname-${column.id}`}
+                                        render={({ messages }) => {
+                                            return messages
+                                                ? Object.entries(messages).map(([type, message]) => (
+                                                    <p className='errorMessage' key={type}>{message}</p>
+                                                ))
+                                                : null;
+                                        }}
+                                    />
                                 </div>
                             ))
                         }
+
+
                     </div>
 
-                    <button className="whiteButton" type='button' onClick={addColumnToBoard} >
+                    <button className="whiteButton large" type='button' onClick={addColumnToBoard} >
                         Add column
                     </button>
 
-                    <button className="purpleButton">
+                    <button className="purpleButton large">
                         Create new board
                     </button>
 

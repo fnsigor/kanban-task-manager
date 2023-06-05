@@ -17,11 +17,6 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
     const { selectedBoard, setSelectedBoard } = useBoardContext()
 
-
-    const { boardid } = useParams()
-
-
-
     useEffect(() => {
         if (selectedTaskData) {
             setTaskName(selectedTaskData.name)
@@ -132,8 +127,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
         }}>
 
             <div className='popupForm EditTask'>
-
-                <span className="closePopup" onClick={deleteTask}>EXCLUIR TAREFA</span>
+                <img title='Delete task' className='closePopup' onClick={deleteTask} src="./icon-trash.svg"/>
 
                 <form >
 
@@ -143,26 +137,26 @@ const EditTask = forwardRef(({ userid }, ref) => {
                             placeholder='e.g Take coffee break'
                             onChange={(e) => setTaskName(e.target.value)}
                             value={taskName}
+                            className='taskName'
                         />
                     </div>
 
                     <div>
                         <textarea
-                            cols="30"
-                            rows="10"
+                        className='taskDescription'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
-                            placeholder='e.g It´s alwais goog to take a break. This 15 minutes break will recharge the batteries a little.'
+                            placeholder='No description'
                         ></textarea>
                     </div>
 
 
 
-                    <div className='boardColumns'>
-                        <span>Subtasks</span>
+                    <div className='subtasksContainer'>
+                        <label>Subtasks</label>
                         {
                             subtasks.map((subtask, index) => (
-                                <div key={subtask.id}>
+                                <div key={subtask.id} className='subtasksDiv'>
                                     <input
                                         checked={subtask.completed}
                                         type="checkbox"
@@ -175,7 +169,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
                                     />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 
-                                    <span onClick={() => deleteSubtask(subtask.id)}>delete</span>
+                                    <img title='Delete subtask' onClick={() => deleteSubtask(subtask.id)} src="./icon-close.svg"/>
 
                                 </div>
                             ))

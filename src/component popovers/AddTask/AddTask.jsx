@@ -1,14 +1,17 @@
-import React, { forwardRef, useEffect, useState } from 'react'
+import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { getUserBoards } from '../../utils/getBoard';
 import useColumnContext from '../../hooks/useColumnContext';
 import { updateBoard } from '../../utils/updateBoard';
 import useBoardContext from '../../hooks/useBoardContext';
+import { useNewTaskName } from '../../hooks/useNewTaskName';
+import { ErrorMessage } from "@hookform/error-message";
+import { useForm } from "react-hook-form";
 
 
-const AddTask = forwardRef((props, ref) => {
+const AddTask = forwardRef(({visible}, ref) => {
 
-    const [subtasks, setSubtasks] = useState([
+
+    const subTasksDefaultValue = [
         {
             name: 'e.g Make coffee',
             completed: false,
@@ -16,46 +19,57 @@ const AddTask = forwardRef((props, ref) => {
         },
         {
             name: 'e.g Drink coffee & smile',
-            tasks: [],
+            completed: false,
             id: 'subtask2'
         },
-    ])
+    ]
 
-    const [taskName, setTaskName] = useState('')
+    const [subtasks, setSubtasks] = useState(subTasksDefaultValue)
+
     const [description, setDescription] = useState('')
-
-
-    const { selectedColumn } = useColumnContext()
-
-    const {selectedBoard, setSelectedBoard} = useBoardContext()
-
-
+    const { selectedColumn, setSelectedColumn } = useColumnContext()
+    const { setSelectedBoard } = useBoardContext()
     const { boardid } = useParams()
+    const { newTaskName, setNewTaskName } = useNewTaskName('')
+
+    const [taskTitle, setTaskTitle] = useState(newTaskName)
+
+    const {
+        register,
+        handleSubmit,
+        formState: { errors }
+    } = useForm({
+        criteriaMode: "all"
+    });
+
+    const resetForm = () => {
+
+        setNewTaskName("")
+        setDescription("")
+        setTaskTitle("")
+        setSubtasks(subTasksDefaultValue)
+
+        console.log('reset no form')
+
+    }
 
 
     const createTaskSubmit = (e) => {
 
-        e.preventDefault();
-        
         const storageJSON = localStorage.getItem(boardid)
 
         const selectedBoard = JSON.parse(storageJSON)
 
-    
+        setSelectedBoard(selectedBoard)
+
+        const namedSubtasksOnly = subtasks.filter(subtask => subtask.name.trim() !== "")
 
         const newTask = {
-            name: taskName,
+            name: taskTitle,
             description,
-            completed: false,
-            subtasks,
+            subtasks: namedSubtasksOnly,
             id: Math.random() * (99 - 1) + 1 + 'task' + Math.random() * (99 - 1) + 1,
         }
-
-    
-
-       // console.log('coluna selecionada:', selectedColumn)
-
-        
 
         const updatedColumns = selectedBoard.columns.map(column => {
 
@@ -75,17 +89,16 @@ const AddTask = forwardRef((props, ref) => {
             columns: updatedColumns,
         }
 
-      updateBoard(updatedBoard, setSelectedBoard); //atualiza o estado e o local storage
+        updateBoard(updatedBoard, setSelectedBoard);
 
+        resetForm()
 
         ref.current.classList.toggle('show')
-
-       // alert('Tarefa adicionada com sucesso')
     };
 
 
     const handleSubtaskNameChange = (event, i) => {
-        let currentSubtasksState = subtasks
+        const currentSubtasksState = subtasks
         currentSubtasksState[i].name = event.target.value
         setSubtasks(currentSubtasksState)
     }
@@ -104,61 +117,142 @@ const AddTask = forwardRef((props, ref) => {
         setSubtasks([...subtasks, newSubtask])
     }
 
+
+    const [availableColumns, setAvailableColumns] = useState([])
+
+
+    useEffect(() => {
+        setTaskTitle(newTaskName)
+
+        const storageJSON = localStorage.getItem(boardid)
+
+        const selectedBoard = JSON.parse(storageJSON)
+
+        setAvailableColumns(selectedBoard.columns) //a atualização desse estado ocorre quando clicamos no botao de adicionar tarefa
+    }, [newTaskName])
+
+
+
     return (
-        <div className="shadow" ref={ref} >
+        <div className="shadow" ref={ref} onClick={(e) => {
+            if (e.target.classList[0] === 'shadow') {
+                ref.current.classList.toggle('show')
+                resetForm()
+            }
+        }} >
             <div className='popupForm'>
-                <h4>Add new Task</h4>
-                <span className="closePopup" onClick={() => ref.current.classList.toggle('show')}>cancelar</span>
-                <form onSubmit={createTaskSubmit}>
+                <h4>Add New Task</h4>
+                <form onSubmit={handleSubmit(() => createTaskSubmit())}>
 
                     <div>
-                        <label>Title</label>
+                        <label htmlFor='taskname'>Title</label>
                         <input
+                            id="taskname"
+                            name="taskname"
                             type="text"
-                            placeholder='e.g Take coffee break'
-                            onChange={(e) => setTaskName(e.target.value)}
-                            value={taskName}
+                            placeholder='Task Title'
+                            value={taskTitle}
+                            {...register("taskname", {
+                                onChange: e => setTaskTitle(e.target.value),
+                                required: "Required input.",
+                                maxLength: {
+                                    value: 50,
+                                    message: "Maximum 50 characters."
+                                }
+                            })}
+                        />
+
+                        <ErrorMessage
+                            errors={errors}
+                            name="taskname"
+                            render={({ messages }) => {
+                                return messages
+                                    ? Object.entries(messages).map(([type, message]) => (
+                                        <p className='errorMessage' key={type}>{message}</p>
+                                    ))
+                                    : null;
+                            }}
                         />
                     </div>
 
                     <div>
-                        <label>Description</label>
+                        <label htmlFor='description'>Description</label>
                         <textarea
-                            cols="30"
-                            rows="10"
+                            id='description'
+                            name='description'
                             value={description}
-                            onChange={(e) => setDescription(e.target.value)}
                             placeholder='e.g It´s alwais goog to take a break. This 15 minutes break will recharge the batteries a little.'
+                            {...register("description", {
+                                onChange: e => setDescription(e.target.value),
+                                maxLength: {
+                                    value: 700,
+                                    message: "Maximum 700 characters."
+                                }
+                            })}
                         ></textarea>
+
+                        <ErrorMessage
+                            errors={errors}
+                            name="description"
+                            render={({ messages }) => {
+                                return messages
+                                    ? Object.entries(messages).map(([type, message]) => (
+                                        <p className='errorMessage' key={type}>{message}</p>
+                                    ))
+                                    : null;
+                            }}
+                        />
                     </div>
 
 
 
-                    <div className='boardColumns'>
+                    <div className='inputAndDeleteContainer'>
                         <label>Subtasks</label>
                         {
                             subtasks.map((subtask, index) => (
                                 <div key={subtask.name + index}>
-                                    <input type="text"
-                                        placeholder={subtask.name}
-                                        defaultValue={subtask.name}
-                                        onChange={(event) => handleSubtaskNameChange(event, index)} />
+                                    <div className='inputAndDeleteDiv'>
+                                        <input
+                                            type="text"
+                                            placeholder={subtask.name}
+                                            defaultValue={subtask.name}
+                                            {...register(`subtaskname${subtask.id}`, {
+                                                onChange: e => handleSubtaskNameChange(e, index),
+                                                maxLength: {
+                                                    value: 100,
+                                                    message: "Maximum 100 characters."
+                                                }
+                                            })}
+                                        />
 
-                                    <span onClick={() => deleteSubtask(subtask.id)}>delete</span>
+                                        <img title='Delete subtask' onClick={() => deleteSubtask(subtask.id)} src="./icon-close.svg" />
+                                    </div>
+
+                                    <ErrorMessage
+                                        errors={errors}
+                                        name={`subtaskname${subtask.id}`}
+                                        render={({ messages }) => {
+                                            return messages
+                                                ? Object.entries(messages).map(([type, message]) => (
+                                                    <p className='errorMessage' key={type}>{message}</p>
+                                                ))
+                                                : null;
+                                        }}
+                                    />
                                 </div>
                             ))
                         }
                     </div>
 
 
-                    <button className="whiteButton" type='button' onClick={createSubtask} >
+                    <button className="whiteButton large" type='button' onClick={createSubtask} >
                         + Add New Subtask
                     </button>
 
-                    {/* <div>
+                    <div className=''>
                         <label htmlFor="board">Select column</label>
 
-                        {selectedBoard && (
+                        {availableColumns && (
                             <select
                                 required
                                 name="board"
@@ -166,24 +260,27 @@ const AddTask = forwardRef((props, ref) => {
                                 onChange={e => setSelectedColumn(e.target.value)}
                                 defaultValue='select a column'
                             >
-                                <option key='select a column' value='select a column' disabled>
-                                    select a column
-                                </option>
 
-                                {selectedBoard.columns.map((column, i) => (
-                                    <option key={column.id} value={column.id}>
-                                        {column.name}
-                                    </option>
+                                {availableColumns.map((column, i) => (
+                                    column.id == selectedColumn
+                                        ? (<option key={column.id} value={column.id} selected>
+                                            {column.name}
+                                        </option>)
+
+                                        : (<option key={column.id} value={column.id}>
+                                            {column.name}
+                                        </option>)
                                 ))}
 
                             </select>
                         )}
+                        <span className="focus"></span>
 
 
-                    </div> */}
+                    </div>
 
 
-                    <button className="purpleButton">
+                    <button className="purpleButton large">
                         Create task
                     </button>
 
