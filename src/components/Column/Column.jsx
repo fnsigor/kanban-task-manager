@@ -55,9 +55,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 
 		const [innerInputValue, setInnerInputValue] = useState(name)
 
-		function handleInputChange(columnName) { //salva no banco no onchange
-
-			console.log(columnName)
+		function handleInputChange(columnName) {
 
 			setInnerInputValue(columnName)
 
@@ -115,7 +113,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 					disabled={innerInputValue.length < 1}
 					className='purpleButton large'
 					ref={btAddTask}
-					onClick={()=>{
+					onClick={() => {
 						showCreateTaskPopup()
 						setNewTaskName(innerInputValue)
 					}}
@@ -125,6 +123,20 @@ function Column({ name, tasks, columnId, columnindex }) {
 
 			</li>
 		)
+	}
+
+	const deleteColumn = () => {
+		const updatedColumns = selectedBoard.columns
+
+		updatedColumns.splice(columnindex, 1)
+
+		const updatedBoard = {
+			boardName: selectedBoard.boardName,
+			id: selectedBoard.id,
+			columns: updatedColumns
+		}
+
+		updateBoard(updatedBoard, setSelectedBoard)
 	}
 
 	return (
@@ -146,6 +158,11 @@ function Column({ name, tasks, columnId, columnindex }) {
 								{provided.placeholder}
 
 								<CreateTaskInput />
+
+
+								<button className='redButton large' onClick={deleteColumn}>
+									Delete Column
+								</button>
 
 							</ul>
 						)}

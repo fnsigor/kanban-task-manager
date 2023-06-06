@@ -6,6 +6,7 @@ import useBoardContext from '../../hooks/useBoardContext';
 
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { CreateColumnInput } from '../../components/CreateColumnInput/CreateColumnInput';
+import { updateBoard } from '../../utils/updateBoard';
 
 function CurrentBoard() {
 
@@ -18,20 +19,6 @@ function CurrentBoard() {
     }, [boardid])
 
 
-    useEffect(() => {
-        const handleBeforeUnload = (event) => {
-
-            localStorage.setItem(selectedBoard.id, JSON.stringify(selectedBoard))
-        };
-
-        window.addEventListener('beforeunload', handleBeforeUnload);
-
-        return () => {
-            window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-    });
-
-
     function handleOnDragEnd(result) {
 
         if (!result.destination) return;
@@ -41,6 +28,7 @@ function CurrentBoard() {
             const selectedItem = selectedBoard.columns.find(column => column.id === result.source.droppableId).tasks[result.source.index]
 
             const updatedColumns = selectedBoard.columns.map(column => {
+
                 if (column.id === result.source.droppableId) {
                     column.tasks.splice(result.source.index, 1)
                 }
@@ -62,11 +50,14 @@ function CurrentBoard() {
                 columns: updatedColumns
             }
 
+            localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard))
+
 
         } else {
             const updatedColumns = selectedBoard.columns
             const [reorderedItem] = selectedBoard.columns.splice(result.source.index, 1);
             updatedColumns.splice(result.destination.index, 0, reorderedItem);
+
 
             const updatedBoard = {
                 boardName: selectedBoard.boardName,
@@ -74,6 +65,7 @@ function CurrentBoard() {
                 columns: updatedColumns
             }
 
+            localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard)) 
         }
 
     }

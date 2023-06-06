@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react"
 import Navbar from "./components/Navbar/Navbar"
 import Sidebar from "./components/Sidebar/Sidebar"
 
-import { Outlet } from 'react-router-dom'
+import { Outlet, useParams } from 'react-router-dom'
 
 import AddBoard from './component popovers/AddBoard/AddBoard'
 import AddTask from './component popovers/AddTask/AddTask'
@@ -49,9 +49,9 @@ function Root() {
 
 								<DOMElementsProvider addTaskPopup={addTaskPopup}>
 
-									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} />
+									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards}/>
 									<div className="outletNavbarContainer">
-										<Navbar addTaskPopup={addTaskPopup} />
+										<Navbar addTaskPopup={addTaskPopup} availableBoards={availableBoards}  />
 										<DNDTargetProvider>
 											<Outlet />
 										</DNDTargetProvider>

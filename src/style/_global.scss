@@ -57,17 +57,21 @@ $green: #7BD389;
             background: darken($purple, 20%);
         }
 
-        &[disabled]{
+        &[disabled] {
             background: darken($purple, 20%);
         }
     }
 
     @else if $theme ==red {
-        background-color: $red;
+        background-color: darken($red, 30%);
         border-radius: 5px;
         padding: 1rem 1.5rem;
         color: $text-color;
         cursor: pointer;
+
+        &:hover {
+            background-color: $red;
+        }
     }
 
     @else {
@@ -84,8 +88,7 @@ $green: #7BD389;
     @include useCreateButton(white);
 }
 
-.whiteButton.large {
-    @include useCreateButton(white);
+.large {
     width: 100%;
 }
 
@@ -93,10 +96,10 @@ $green: #7BD389;
     @include useCreateButton(purple);
 }
 
-.purpleButton.large {
-    @include useCreateButton(purple);
-    width: 100%;
+.redButton {
+    @include useCreateButton(red);
 }
+
 
 
 .shadow {
@@ -220,7 +223,7 @@ img[src="./icon-close.svg"] {
 
     background-color: $transparent-bg;
 
-    height: 100%;
+    height: fit-content;
 
     width: 30rem;
     padding: 2rem;
@@ -360,6 +363,7 @@ img[src="./icon-close.svg"] {
         @include useFlex(column);
         align-items: start;
         gap: 1rem;
+        margin-bottom: 2rem;
 
     }
 
@@ -394,17 +398,21 @@ img[src="./icon-close.svg"] {
 
     }
 
-    ul li:last-child {
-        color: $purple;
-        padding-left: 2rem;
-        cursor: pointer;
 
-        &:hover {
-            background-color: initial;
-            color: $text-color;
-
-        }
+    .sidebarOptions {
+        width: 85%;
+        margin-left: 2rem;
     }
+
+    .sidebarOptions button:nth-child(1) {
+        margin-bottom: 2rem;
+    }
+
+
+
+
+
+
 }
 
 
@@ -523,11 +531,11 @@ img[src="./icon-close.svg"] {
         align-items: start;
     }
 
-    .inputAndDeleteContainer > div{
+    .inputAndDeleteContainer>div {
         width: 100%
     }
 
-    .boardColumns{
+    .boardColumns {
         width: 100%;
     }
 
@@ -579,7 +587,7 @@ img[src="./icon-close.svg"] {
         color: darken(#fff, 50%);
     }
 
-    input[type='checkbox']{
+    input[type='checkbox'] {
         height: 25px;
         width: 25px;
         outline: none;
@@ -587,7 +595,7 @@ img[src="./icon-close.svg"] {
         margin-right: 5px;
     }
 
-    .subtasksContainer div:not(.subtasksContainer div:last-child){
+    .subtasksContainer div:not(.subtasksContainer div:last-child) {
         margin-bottom: 1rem
     }
 
@@ -611,10 +619,10 @@ img[src="./icon-close.svg"] {
         width: 10%;
     }
 
-    .subtasksDiv img{
+    .subtasksDiv img {
         height: 28px;
     }
 
-    
+
 
 }

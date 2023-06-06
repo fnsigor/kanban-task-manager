@@ -1,9 +1,39 @@
-import React from 'react'
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react'
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import useBoardContext from '../../hooks/useBoardContext';
 
 
 
-function Sidebar({ addBoardPopup, availableBoards: boards }) {
+function Sidebar({ addBoardPopup, availableBoards: boards, setAvailableBoards }) {
+
+
+    const { boardid } = useParams()
+
+    const navigate = useNavigate()
+
+    const { selectedBoard,setSelectedBoard } = useBoardContext()
+
+    const deleteBoard = () => {
+
+        const allStorageBoards = Object.keys(localStorage).map(boardid => {
+            const boardJSON = localStorage.getItem(boardid)
+            return JSON.parse(boardJSON)
+        })
+
+        const updatedBoards = allStorageBoards
+
+        const removedItemIndex = updatedBoards.findIndex(board => board.id == boardid)
+
+        updatedBoards.splice(removedItemIndex, 1)
+
+        localStorage.removeItem(selectedBoard.id)
+        setAvailableBoards(updatedBoards)
+
+
+        navigate('/')
+        setSelectedBoard(null)
+
+    }
 
 
 
@@ -21,7 +51,7 @@ function Sidebar({ addBoardPopup, availableBoards: boards }) {
                 {
                     boards.map((board, index) => (
                         <li key={board.id + 'boardname'}>
-                            <Link to={`/boards/${board.id}`}  className='sidebar-board-title'>
+                            <Link to={`/boards/${board.id}`} className='sidebar-board-title'>
                                 <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24"><path fill="currentColor" d="M7 7h2v10H7zm4 0h2v5h-2zm4 0h2v8h-2z" /><path fill="currentColor" d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z" /></svg>
                                 <span>{board.boardName}</span>
                             </Link>
@@ -29,10 +59,22 @@ function Sidebar({ addBoardPopup, availableBoards: boards }) {
 
                     ))
                 }
-                <li className='sidebar-board-title' onClick={() => addBoardPopup.current.classList.add('show')} >
-                    + Create New Board
-                </li>
             </ul>
+
+            <div className="sidebarOptions">
+                <button className='purpleButton large' onClick={() => addBoardPopup.current.classList.add('show')} >
+                    + Create New Board
+                </button>
+
+                {boardid && (
+                    <button className='redButton large' onClick={deleteBoard}>Excluir Board Atual <br />
+                        ({selectedBoard?.boardName})
+                    </button>
+                )}
+
+
+            </div>
+
         </div>
     )
 }

@@ -128,7 +128,7 @@ const AddTask = forwardRef(({visible}, ref) => {
 
         const selectedBoard = JSON.parse(storageJSON)
 
-        setAvailableColumns(selectedBoard.columns) //a atualização desse estado ocorre quando clicamos no botao de adicionar tarefa
+        setAvailableColumns(selectedBoard?.columns) //a atualização desse estado ocorre quando clicamos no botao de adicionar tarefa
     }, [newTaskName])
 
 
