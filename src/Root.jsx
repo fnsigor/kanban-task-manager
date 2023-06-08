@@ -42,16 +42,17 @@ function Root() {
 		<div id="app">
 			<SelectedBoardProvider>
 				<SelectedColumnProvider>
-					<NewTaskNameProvider>
-						<EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
+					<EditTaskPopupHTMLProvider editTaskPopup={editTaskPopup}>
 
-							<SelectedTaskProvider>
+						<SelectedTaskProvider>
 
-								<DOMElementsProvider addTaskPopup={addTaskPopup}>
+							<DOMElementsProvider addTaskPopup={addTaskPopup}>
+								
+								<NewTaskNameProvider>
 
-									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards}/>
+									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards} />
 									<div className="outletNavbarContainer">
-										<Navbar addTaskPopup={addTaskPopup} availableBoards={availableBoards}  />
+										<Navbar addTaskPopup={addTaskPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards}/>
 										<DNDTargetProvider>
 											<Outlet />
 										</DNDTargetProvider>
@@ -60,13 +61,14 @@ function Root() {
 									<AddTask ref={addTaskPopup} />
 									<AddBoard ref={addBoardPopup} setAvailableBoards={setAvailableBoards} availableBoards={availableBoards} />
 									<EditTask ref={editTaskPopup} />
+									
+								</NewTaskNameProvider>
 
-								</DOMElementsProvider>
+							</DOMElementsProvider>
 
-							</SelectedTaskProvider>
+						</SelectedTaskProvider>
 
-						</EditTaskPopupHTMLProvider>
-					</NewTaskNameProvider>
+					</EditTaskPopupHTMLProvider>
 				</SelectedColumnProvider>
 
 			</SelectedBoardProvider>

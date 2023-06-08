@@ -1,28 +1,58 @@
-import React, { useRef } from 'react'
+import React, { useEffect, useState } from 'react'
 import useBoardContext from '../../hooks/useBoardContext'
+import { updateBoard } from '../../utils/updateBoard'
+import { useParams } from 'react-router-dom'
+
+function Navbar({ setAvailableBoards, availableBoards }) {
 
 
-function Navbar({ availableBoards }) {
+    const { selectedBoard, setSelectedBoard } = useBoardContext()
+
+    const [boardName, setBoardName] = useState("")
+
+    const { boardid } = useParams()
+
+    useEffect(() => {
+
+        if (selectedBoard) {
+            setBoardName(selectedBoard.boardName)
+        }
+
+    }, [selectedBoard])
 
 
-    const { selectedBoard } = useBoardContext()
+    function updateBoardName() {
+        const updatedBoard = { ...selectedBoard, boardName }
+        updateBoard(updatedBoard, setSelectedBoard)
+
+        const updatedAvailableBoards = availableBoards.map(board => {
+            if (board.id == updatedBoard.id) {
+                return updatedBoard
+            } else {
+                return board
+            }
+        })
 
 
-    if (availableBoards.length === 0 || selectedBoard === null) {
-        return (
-            <nav id='navbar'>
-
-                <h1 className='board-title'>Kanban Task Manager</h1>
-
-            </nav>
-        )
+        setAvailableBoards(updatedAvailableBoards)
     }
 
 
     return (
         <nav id='navbar'>
 
-            <h1 className='board-title'>{selectedBoard?.boardName}</h1>
+            {
+                (boardid == undefined || boardid === "")
+                    ? (<h1 className='board-title'>Kanban Task Manager</h1>)
+                    : (<input
+                        className='board-title'
+                        placeholder='Kanban Task Manager'
+                        value={boardName}
+                        onChange={e => setBoardName(e.target.value)}
+                        onBlur={updateBoardName} />
+                    )
+            }
+
 
         </nav>
     )

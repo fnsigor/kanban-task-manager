@@ -1,23 +1,26 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import Column from '../../components/Column/Column';
 import { getUserBoards } from '../../utils/getBoard';
 import useBoardContext from '../../hooks/useBoardContext';
-
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { CreateColumnInput } from '../../components/CreateColumnInput/CreateColumnInput';
-import { updateBoard } from '../../utils/updateBoard';
 
 function CurrentBoard() {
 
     const { boardid } = useParams()
+    const navigate = useNavigate()
     
     const { selectedBoard, setSelectedBoard } = useBoardContext()
     
     useEffect(() => {
+        if(boardid == "undefined"){
+            navigate('/')
+        }
+        
         getUserBoards(setSelectedBoard, 'one', boardid)
     }, [boardid])
-
+ 
 
     function handleOnDragEnd(result) {
 
@@ -65,7 +68,7 @@ function CurrentBoard() {
                 columns: updatedColumns
             }
 
-            localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard)) 
+            // localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard)) 
         }
 
     }

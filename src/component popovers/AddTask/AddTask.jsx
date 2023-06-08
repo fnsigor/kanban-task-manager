@@ -1,4 +1,4 @@
-import React, { forwardRef, useContext, useEffect, useRef, useState } from 'react'
+import React, { forwardRef, useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import useColumnContext from '../../hooks/useColumnContext';
 import { updateBoard } from '../../utils/updateBoard';
@@ -8,7 +8,15 @@ import { ErrorMessage } from "@hookform/error-message";
 import { useForm } from "react-hook-form";
 
 
-const AddTask = forwardRef(({visible}, ref) => {
+const AddTask = forwardRef(({ visible }, ref) => {
+
+
+    const { newTaskName, setNewTaskName } = useNewTaskName('')
+    const [taskTitle, setTaskTitle] = useState('newTaskName')
+    const [description, setDescription] = useState('')
+    const { selectedColumn, setSelectedColumn } = useColumnContext()
+    const { setSelectedBoard } = useBoardContext()
+    const { boardid } = useParams()
 
 
     const subTasksDefaultValue = [
@@ -23,16 +31,7 @@ const AddTask = forwardRef(({visible}, ref) => {
             id: 'subtask2'
         },
     ]
-
     const [subtasks, setSubtasks] = useState(subTasksDefaultValue)
-
-    const [description, setDescription] = useState('')
-    const { selectedColumn, setSelectedColumn } = useColumnContext()
-    const { setSelectedBoard } = useBoardContext()
-    const { boardid } = useParams()
-    const { newTaskName, setNewTaskName } = useNewTaskName('')
-
-    const [taskTitle, setTaskTitle] = useState(newTaskName)
 
     const {
         register,
@@ -42,15 +41,10 @@ const AddTask = forwardRef(({visible}, ref) => {
         criteriaMode: "all"
     });
 
-    const resetForm = () => {
-
-        setNewTaskName("")
+    const resetForm = () => { 
         setDescription("")
         setTaskTitle("")
         setSubtasks(subTasksDefaultValue)
-
-        console.log('reset no form')
-
     }
 
 
@@ -98,9 +92,12 @@ const AddTask = forwardRef(({visible}, ref) => {
 
 
     const handleSubtaskNameChange = (event, i) => {
-        const currentSubtasksState = subtasks
-        currentSubtasksState[i].name = event.target.value
-        setSubtasks(currentSubtasksState)
+        const updatedSubtasks = [...subtasks];
+        updatedSubtasks[i] = {
+            ...updatedSubtasks[i],
+            name: event.target.value
+        };
+        setSubtasks(updatedSubtasks)
     }
 
     const deleteSubtask = (deletedSubtaskId) => {
@@ -210,12 +207,13 @@ const AddTask = forwardRef(({visible}, ref) => {
                         <label>Subtasks</label>
                         {
                             subtasks.map((subtask, index) => (
-                                <div key={subtask.name + index}>
+                                <div key={subtask.name + 'a' + index}>
                                     <div className='inputAndDeleteDiv'>
                                         <input
                                             type="text"
                                             placeholder={subtask.name}
-                                            defaultValue={subtask.name}
+                                            value={subtask.name}
+                                            autoFocus
                                             {...register(`subtaskname${subtask.id}`, {
                                                 onChange: e => handleSubtaskNameChange(e, index),
                                                 maxLength: {

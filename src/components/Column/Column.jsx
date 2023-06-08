@@ -6,8 +6,8 @@ import { DOMElementsContext } from '../../context/DOMElementsContext'
 import useBoardContext from '../../hooks/useBoardContext'
 import { Droppable, Draggable } from 'react-beautiful-dnd';
 import { useNewTaskName } from '../../hooks/useNewTaskName'
-import { useParams } from 'react-router-dom'
 import { updateBoard } from '../../utils/updateBoard'
+import { useParams } from 'react-router-dom'
 
 function Column({ name, tasks, columnId, columnindex }) {
 
@@ -16,12 +16,8 @@ function Column({ name, tasks, columnId, columnindex }) {
 	const { selectedBoard, setSelectedBoard } = useBoardContext()
 	const { DOMElements: addTaskPopup } = useContext(DOMElementsContext)
 	const { setNewTaskName } = useNewTaskName()
-	const btAddTask = useRef()
-	const taskNameInput = useRef()
 
-	const columnNameInput = useRef()
-
-
+	const { boardid } = useParams()
 
 	const toggleClass = () => {
 		editTaskElement.current.classList.toggle('show')
@@ -44,18 +40,20 @@ function Column({ name, tasks, columnId, columnindex }) {
 	};
 
 
-	const showCreateTaskPopup = () => {
-		setNewTaskName(taskNameInput.current.value)
-		addTaskPopup.current.classList.toggle('show')
-		setSelectedColumn(columnId)
-	}
-
-
 	function ColumnTitle() {
 
-		const [innerInputValue, setInnerInputValue] = useState(name)
+		const [innerInputValue, setInnerInputValue] = useState(name ?? "")
 
-		function handleInputChange(columnName) {
+		useEffect(() => {
+			const storageJSON = localStorage.getItem(boardid)
+
+			const selectedBoard = JSON.parse(storageJSON)
+
+			setInnerInputValue(selectedBoard.columns[columnindex].name)
+
+		}, [])//as funções que usam contextapi estão re renderizando o componente e alterando o valor do estado innerInputValue
+
+		function updateColumnNameAtStorage(columnName) {
 
 			setInnerInputValue(columnName)
 
@@ -81,8 +79,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 			<input className='column-title'
 				type='text'
 				value={innerInputValue}
-				onChange={(e) => handleInputChange(e.target.value)}
-				ref={columnNameInput}
+				onChange={(e) => updateColumnNameAtStorage(e.target.value)}
 			/>
 		)
 	}
@@ -90,35 +87,27 @@ function Column({ name, tasks, columnId, columnindex }) {
 
 	function CreateTaskInput() {
 
-
-		const [innerInputValue, setInnerInputValue] = useState("")
+		const [taskNameInputValue, setTaskNameInputValue] = useState("")
 
 		return (
 			<li className='addTaskLi'>
 				<input
-					value={innerInputValue}
-					onChange={e => setInnerInputValue(e.target.value)}
-					ref={taskNameInput}
+					value={taskNameInputValue}
+					onChange={e => setTaskNameInputValue(e.target.value)}
 					type="text"
 					placeholder="+ Add New Task"
-					onFocus={() => btAddTask.current.style.display = 'initial'}
-					onBlur={() => {
-						setTimeout(() => {
-							btAddTask.current.style.display = 'none'
-							setInnerInputValue("")
-						}, 100)
-					}}
 				/>
 				<button
-					disabled={innerInputValue.length < 1}
+					hidden={taskNameInputValue.length < 1}
 					className='purpleButton large'
-					ref={btAddTask}
 					onClick={() => {
-						showCreateTaskPopup()
-						setNewTaskName(innerInputValue)
+						setSelectedColumn(columnId)
+						setNewTaskName(taskNameInputValue)
+						addTaskPopup.current.classList.toggle('show')
+						console.log('abriu popup')
 					}}
 				>
-					Criar tarefa
+					Create Task
 				</button>
 
 			</li>

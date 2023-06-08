@@ -1,10 +1,7 @@
 import React, { forwardRef, useEffect, useState } from 'react'
 import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
 import useBoardContext from '../../hooks/useBoardContext'
-
-import { useParams } from 'react-router-dom'
 import { updateBoard } from '../../utils/updateBoard'
-import useColumnContext from '../../hooks/useColumnContext'
 
 const EditTask = forwardRef(({ userid }, ref) => {
 
