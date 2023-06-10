@@ -137,7 +137,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 					<ColumnTitle />
 
 
-					<StrictModeDroppable droppableId={columnId} type='listContent'>
+					<StrictModeDroppable droppableId={columnId} type='columnDND'>
 						{(provided) => (
 							<ul {...provided.droppableProps} ref={provided.innerRef} className='taskList'>
 								{tasks.map((task, index) => (
@@ -149,7 +149,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 								<CreateTaskInput />
 
 
-								<button className='redButton large' onClick={deleteColumn}>
+								<button className='redButton large reverse' onClick={deleteColumn}>
 									Delete Column
 								</button>
 

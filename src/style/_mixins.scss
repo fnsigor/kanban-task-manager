@@ -1,0 +1,77 @@
+@mixin useFlex($direction: row) {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: $direction;
+}
+
+@mixin useCreateButton($theme, $reverseHoverEffect: noreverse) {
+
+    text-shadow: 0 0 2px 0.5px;
+
+    @if $theme ==white {
+        background-color: #fff;
+        border-radius: 5px;
+        padding: 1rem 1.5rem;
+        color: #000;
+        cursor: pointer;
+
+        &:hover {
+            background: darken(#FFF, 20%);
+        }
+    }
+
+    @else if $theme ==purple {
+        background-color: $purple;
+        border-radius: 5px;
+        padding: 1rem 1.5rem;
+        color: $text-color;
+        cursor: pointer;
+
+        &:hover {
+            background: darken($purple, 20%);
+        }
+
+        &[disabled] {
+            background: darken($purple, 20%);
+        }
+    }
+
+    @else if $theme ==red {
+
+        @if $reverseHoverEffect == reversehover{
+
+            background-color: darken($red, 20%);
+            border-radius: 5px;
+            padding: 1rem 1.5rem;
+            color: $text-color;
+            cursor: pointer;
+            
+            &:hover {
+                background-color: $red;
+            }
+
+
+        } @else {
+            background-color: $red;
+            border-radius: 5px;
+            padding: 1rem 1.5rem;
+            color: $text-color;
+            cursor: pointer;
+    
+            &:hover {
+                background-color: darken($red, 20%);
+            }
+        }
+
+       
+    }
+
+    @else {
+        background-color: $green;
+        border-radius: 5px;
+        padding: 1rem 1.5rem;
+        color: $text-color;
+        cursor: pointer;
+    }
+}

@@ -1,87 +1,8 @@
 // ====================ARQUIVO PARA FUNÇÕES SASS E CONFIGURAÇÕES GLOBAIS
-
-
-$dark-bg: #21212d;
-$component-gray: #2c2c38;
-$text-gray: #888fa0;
-$purple: #645fc6;
-$text-color: #fff;
-$transparent-bg: #0000004b;
-$gray-border-color: #444;
-$red: #E71D36;
-$green: #7BD389;
-
-* {
-    margin: 0;
-    padding: 0;
-    list-style: none;
-    box-sizing: border-box;
-    text-decoration: none;
-    border: none;
-    background: none;
-}
-
-
-
-@mixin useFlex($direction: row) {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: $direction;
-}
-
-@mixin useCreateButton($theme) {
-
-    text-shadow: 0 0 2px 0.5px;
-
-    @if $theme ==white {
-        background-color: #fff;
-        border-radius: 5px;
-        padding: 1rem 1.5rem;
-        color: #000;
-        cursor: pointer;
-
-        &:hover {
-            background: darken(#FFF, 20%);
-        }
-    }
-
-    @else if $theme ==purple {
-        background-color: $purple;
-        border-radius: 5px;
-        padding: 1rem 1.5rem;
-        color: $text-color;
-        cursor: pointer;
-
-        &:hover {
-            background: darken($purple, 20%);
-        }
-
-        &[disabled] {
-            background: darken($purple, 20%);
-        }
-    }
-
-    @else if $theme ==red {
-        background-color: darken($red, 30%);
-        border-radius: 5px;
-        padding: 1rem 1.5rem;
-        color: $text-color;
-        cursor: pointer;
-
-        &:hover {
-            background-color: $red;
-        }
-    }
-
-    @else {
-        background-color: $green;
-        border-radius: 5px;
-        padding: 1rem 1.5rem;
-        color: $text-color;
-        cursor: pointer;
-    }
-}
+@import 'vars.scss';
+@import 'mixins.scss';
+@import 'reset.scss';
+@import 'font-sizes.scss';
 
 
 .whiteButton {
@@ -98,6 +19,11 @@ $green: #7BD389;
 
 .redButton {
     @include useCreateButton(red);
+}
+
+.redButton.reverse {
+
+    @include useCreateButton(red, reversehover);
 }
 
 
@@ -308,6 +234,22 @@ img[src="./icon-close.svg"] {
     background-color: $component-gray;
 
     border-bottom: 2px solid $gray-border-color;
+
+
+    input {
+        border: initial;
+        border-radius: 0;
+        outline: none;
+        border-bottom: 1px solid #00000000;
+        color: #fff;
+
+    }
+
+
+    input:focus {
+        border-bottom: 1px solid $gray-border-color;
+    }
+
 }
 
 
@@ -336,8 +278,12 @@ img[src="./icon-close.svg"] {
 
 
         margin-bottom: 3rem;
-        text-transform: uppercase;
         padding-left: 2rem;
+
+        a {
+            text-transform: uppercase;
+            color: #fff;
+        }
 
         svg {
             margin-right: 5px;
@@ -374,6 +320,7 @@ img[src="./icon-close.svg"] {
         border-bottom-right-radius: 20px;
         color: #fff;
         padding-left: 2rem;
+        word-break: break-all;
 
         @include useFlex;
         justify-content: flex-start;
@@ -575,6 +522,14 @@ img[src="./icon-close.svg"] {
     .taskDescription {
         font-size: 1.8rem;
         font-weight: 400;
+        border: 1px solid $gray-border-color;
+        border-radius: 5px;
+
+        &:focus {
+            // outline: 1px solid $purple;
+            background-color: #5656563c;
+        }
+
     }
 
     input[type='checkbox']:checked+label {
@@ -616,6 +571,10 @@ img[src="./icon-close.svg"] {
 
     .subtasksDiv img {
         height: 28px;
+    }
+
+    .redButton {
+        margin-bottom: 0;
     }
 
 

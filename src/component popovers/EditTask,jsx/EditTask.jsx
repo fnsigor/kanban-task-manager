@@ -124,7 +124,6 @@ const EditTask = forwardRef(({ userid }, ref) => {
         }}>
 
             <div className='popupForm EditTask'>
-                <img title='Delete task' className='closePopup' onClick={deleteTask} src="./icon-trash.svg"/>
 
                 <form >
 
@@ -140,7 +139,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
                     <div>
                         <textarea
-                        className='taskDescription'
+                            className='taskDescription'
                             value={description}
                             onChange={(e) => setDescription(e.target.value)}
                             placeholder='No description'
@@ -166,12 +165,15 @@ const EditTask = forwardRef(({ userid }, ref) => {
                                     />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 
-                                    <img title='Delete subtask' onClick={() => deleteSubtask(subtask.id)} src="./icon-close.svg"/>
+                                    <img title='Delete subtask' onClick={() => deleteSubtask(subtask.id)} src="./icon-close.svg" />
 
                                 </div>
                             ))
                         }
                     </div>
+
+                    <button className='redButton large' onClick={deleteTask}>Delete task</button>
+
                 </form>
             </div >
         </div >

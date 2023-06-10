@@ -27,7 +27,7 @@ function CurrentBoard() {
         if (!result.destination) return;
 
 
-        if (result.type === 'listContent') {
+        if (result.type === 'columnDND') {
             const selectedItem = selectedBoard.columns.find(column => column.id === result.source.droppableId).tasks[result.source.index]
 
             const updatedColumns = selectedBoard.columns.map(column => {
@@ -68,7 +68,7 @@ function CurrentBoard() {
                 columns: updatedColumns
             }
 
-            // localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard)) 
+            localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard)) 
         }
 
     }

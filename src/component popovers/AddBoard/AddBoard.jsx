@@ -127,8 +127,8 @@ const AddBoard = forwardRef(({ setAvailableBoards, availableBoards }, ref) => {
                                 onChange: e => setBoardName(e.target.value),
                                 required: "Required input.",
                                 maxLength: {
-                                    value: 20,
-                                    message: "Maximum 20 characters."
+                                    value: 30,
+                                    message: "Maximum 30 characters."
                                 }
                             })}
                         />

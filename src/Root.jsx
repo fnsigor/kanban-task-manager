@@ -1,4 +1,4 @@
-import './style/index.scss'
+
 import { useEffect, useState, useRef } from "react"
 import Navbar from "./components/Navbar/Navbar"
 import Sidebar from "./components/Sidebar/Sidebar"
@@ -54,7 +54,7 @@ function Root() {
 									<div className="outletNavbarContainer">
 										<Navbar addTaskPopup={addTaskPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards}/>
 										<DNDTargetProvider>
-											<Outlet />
+											<Outlet context={[availableBoards]}  />
 										</DNDTargetProvider>
 									</div>
 
