@@ -282,6 +282,13 @@ const AddTask = forwardRef(({ visible }, ref) => {
                         Create task
                     </button>
 
+                    <button className="redButton large" onClick={()=> {
+                        ref.current.classList.toggle('show')
+                        resetForm()
+                    }}>
+                        Close
+                    </button>
+
 
                 </form>
             </div >

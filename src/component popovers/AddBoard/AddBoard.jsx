@@ -193,8 +193,14 @@ const AddBoard = forwardRef(({ setAvailableBoards, availableBoards }, ref) => {
                     <button className="purpleButton large">
                         Create new board
                     </button>
-
                 </form>
+
+                <button className="redButton large" onClick={() => {
+                    ref.current.classList.toggle('show')
+                    resetForm()
+                }}>
+                    Close
+                </button>
             </div>
         </div>
     )

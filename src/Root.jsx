@@ -3,7 +3,7 @@ import { useEffect, useState, useRef } from "react"
 import Navbar from "./components/Navbar/Navbar"
 import Sidebar from "./components/Sidebar/Sidebar"
 
-import { Outlet, useParams } from 'react-router-dom'
+import { Outlet, useNavigate, useParams } from 'react-router-dom'
 
 import AddBoard from './component popovers/AddBoard/AddBoard'
 import AddTask from './component popovers/AddTask/AddTask'
@@ -23,6 +23,8 @@ function Root() {
 	const addTaskPopup = useRef()
 	const editTaskPopup = useRef()
 
+	const navigate = useNavigate()
+
 	const [availableBoards, setAvailableBoards] = useState([])
 
 	useEffect(() => {
@@ -35,7 +37,7 @@ function Root() {
 	}, [])
 
 
-	const deleteBoard = () => {
+	const deleteBoard = (boardid, selectedBoard, setSelectedBoard) => {
 
 		const allStorageBoards = Object.keys(localStorage).map(boardid => {
 			const boardJSON = localStorage.getItem(boardid)

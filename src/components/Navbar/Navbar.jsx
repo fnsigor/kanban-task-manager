@@ -5,7 +5,7 @@ import { Link, useParams } from 'react-router-dom'
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 
 
-export const MobiLeMenu = ({availableBoards, boardid, addBoardPopup, deleteBoard, selectedBoard }) => {
+export const MobiLeMenu = ({availableBoards, boardid, addBoardPopup, deleteBoard, selectedBoard, setSelectedBoard }) => {
 
     return (
         <DropdownMenu.Root>
@@ -40,7 +40,7 @@ export const MobiLeMenu = ({availableBoards, boardid, addBoardPopup, deleteBoard
 
                     {boardid && (
                         <DropdownMenu.Item className='mobileMenuItem' >
-                            <button className='redButton large' onClick={deleteBoard}>Excluir Board Atual <br />
+                            <button className='redButton large' onClick={()=> deleteBoard(boardid, selectedBoard, setSelectedBoard)}>Excluir Board Atual <br />
                                 ({selectedBoard?.boardName})
                             </button>
                         </DropdownMenu.Item >
@@ -137,6 +137,7 @@ function Navbar({ setAvailableBoards, availableBoards, addBoardPopup, deleteBoar
                     addBoardPopup={addBoardPopup}
                     deleteBoard={deleteBoard}
                     selectedBoard={selectedBoard}
+                    setSelectedBoard={setSelectedBoard}
                 />
             </div>
 

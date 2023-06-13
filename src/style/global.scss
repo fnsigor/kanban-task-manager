@@ -59,7 +59,7 @@ img[src="./icon-close.svg"] {
     display: none;
 }
 
-.mobileMenuContent{
+.mobileMenuContent {
     display: none;
 }
 
@@ -375,7 +375,8 @@ img[src="./icon-close.svg"] {
 
     border-radius: 5px;
 
-    width: 500px;
+    width: 95%;
+    max-width: 500px;
 
     max-height: 90%;
     overflow-y: auto;
@@ -412,20 +413,7 @@ img[src="./icon-close.svg"] {
     left: 50%;
     transform: translate(-50%, -50%);
 
-    .closePopup {
-        position: absolute;
-        top: 3.5rem;
-        right: 3.5rem;
-        font-size: 1.4rem;
-        width: 45px;
-        height: 45px;
-        transform: translateY(-26%);
-        cursor: pointer;
-
-        &:hover {
-            filter: drop-shadow(0 0 3px $red);
-        }
-    }
+   
 
     h4,
     form>div,
@@ -501,6 +489,10 @@ img[src="./icon-close.svg"] {
         background-color: $component-gray;
     }
 
+    .purpleButton{
+        margin-bottom: 1.6rem;
+    }
+
 
 }
 
@@ -508,6 +500,10 @@ img[src="./icon-close.svg"] {
 
 
 .popupForm.EditTask {
+
+    &>button:last-child{
+        margin-top: 1rem;
+    }
 
 
     .taskName,
@@ -647,7 +643,7 @@ img[src="./icon-close.svg"] {
 
         padding-left: 0;
 
-        input{
+        input {
             width: 90%;
         }
 
@@ -674,7 +670,7 @@ img[src="./icon-close.svg"] {
             color: $purple;
         }
 
-        
+
 
 
 
@@ -699,7 +695,7 @@ img[src="./icon-close.svg"] {
         will-change: transform, opacity;
     }
 
-    .mobileMenuItem{
+    .mobileMenuItem {
         position: relative;
     }
 
@@ -735,6 +731,100 @@ img[src="./icon-close.svg"] {
     .currentPageAndNavbarContainer {
         width: 100vw;
     }
+
+
+
+    .popupForm {
+
+        border-radius: 5px;
+
+        
+
+        padding: 5vw;
+
+
+        h4,
+        form>div,
+        form>button:nth-of-type(1) {
+            margin-bottom: 3rem;
+        }
+
+        h4 {
+            font-size: 2.5rem;
+            font-weight: 500;
+        }
+
+        form>div {
+            @include useFlex(column);
+            align-items: start;
+        }
+
+        label,
+        input,
+        textarea {
+            font-weight: 400;
+        }
+
+        label {
+            align-items: start;
+            margin-bottom: .5rem;
+            font-size: 1.8rem;
+        }
+
+        input,
+        textarea,
+        select {
+            font-size: 1.6rem;
+            border: 2px solid $gray-border-color;
+            border-radius: 5px;
+            padding: .4rem .5rem;
+            color: #fff;
+            width: 100%;
+        }
+
+        input:focus,
+        textarea:focus {
+            outline: 2px solid lighten($purple, 10%);
+        }
+
+        textarea {
+            resize: none;
+            height: 15rem
+        }
+
+        .inputAndDeleteContainer {
+            @include useFlex(column);
+            gap: 1rem;
+            align-items: start;
+        }
+
+        .inputAndDeleteContainer>div {
+            width: 100%
+        }
+
+        .boardColumns {
+            width: 100%;
+        }
+
+        .inputAndDeleteDiv {
+            width: 100%;
+            @include useFlex(row);
+            gap: 1rem;
+        }
+
+
+        option {
+            background-color: $component-gray;
+        }
+
+        .purpleButton{
+            margin-bottom: 1rem;
+        }
+
+
+    }
+
+
 
 
 

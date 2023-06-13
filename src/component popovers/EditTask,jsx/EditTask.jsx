@@ -175,6 +175,12 @@ const EditTask = forwardRef(({ userid }, ref) => {
                     <button className='redButton large' onClick={deleteTask}>Delete task</button>
 
                 </form>
+
+                <button className="redButton large" onClick={() => {
+                    ref.current.classList.toggle('show')
+                }}>
+                    Close
+                </button>
             </div >
         </div >
     )
