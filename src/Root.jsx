@@ -35,6 +35,29 @@ function Root() {
 	}, [])
 
 
+	const deleteBoard = () => {
+
+		const allStorageBoards = Object.keys(localStorage).map(boardid => {
+			const boardJSON = localStorage.getItem(boardid)
+			return JSON.parse(boardJSON)
+		})
+
+		const updatedBoards = allStorageBoards
+
+		const removedItemIndex = updatedBoards.findIndex(board => board.id == boardid)
+
+		updatedBoards.splice(removedItemIndex, 1)
+
+		localStorage.removeItem(selectedBoard.id)
+		setAvailableBoards(updatedBoards)
+
+
+		navigate('/')
+		setSelectedBoard(null)
+
+	}
+
+
 	return (
 
 
@@ -47,21 +70,41 @@ function Root() {
 						<SelectedTaskProvider>
 
 							<DOMElementsProvider addTaskPopup={addTaskPopup}>
-								
+
 								<NewTaskNameProvider>
 
-									<Sidebar addBoardPopup={addBoardPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards} />
-									<div className="outletNavbarContainer">
-										<Navbar addTaskPopup={addTaskPopup} availableBoards={availableBoards} setAvailableBoards={setAvailableBoards}/>
+									<Sidebar
+										addBoardPopup={addBoardPopup}
+										availableBoards={availableBoards}
+										setAvailableBoards={setAvailableBoards}
+										deleteBoard={deleteBoard}
+									/>
+
+									<div className="currentPageAndNavbarContainer">
+										<Navbar
+											addTaskPopup={addTaskPopup}
+											availableBoards={availableBoards}
+											setAvailableBoards={setAvailableBoards}
+											addBoardPopup={addBoardPopup}
+											deleteBoard={deleteBoard}
+										/>
 										<DNDTargetProvider>
-											<Outlet context={[availableBoards]}  />
+											<Outlet context={[availableBoards]} />
 										</DNDTargetProvider>
 									</div>
 
-									<AddTask ref={addTaskPopup} />
-									<AddBoard ref={addBoardPopup} setAvailableBoards={setAvailableBoards} availableBoards={availableBoards} />
-									<EditTask ref={editTaskPopup} />
-									
+									<AddTask
+										ref={addTaskPopup}
+									/>
+									<AddBoard
+										ref={addBoardPopup}
+										setAvailableBoards={setAvailableBoards}
+										availableBoards={availableBoards}
+									/>
+									<EditTask
+										ref={editTaskPopup}
+									/>
+
 								</NewTaskNameProvider>
 
 							</DOMElementsProvider>

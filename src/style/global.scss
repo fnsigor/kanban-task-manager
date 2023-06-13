@@ -55,6 +55,15 @@ img[src="./icon-close.svg"] {
 }
 
 
+#mobileMenu {
+    display: none;
+}
+
+.mobileMenuContent{
+    display: none;
+}
+
+
 
 
 
@@ -63,12 +72,12 @@ img[src="./icon-close.svg"] {
     background-color: $dark-bg;
     min-height: 100vh;
     color: $text-color;
-
+    width: 100vw;
     display: flex;
 }
 
 
-.outletNavbarContainer {
+.currentPageAndNavbarContainer {
 
     width: calc(100% - 25rem);
     display: flex;
@@ -576,6 +585,158 @@ img[src="./icon-close.svg"] {
     .redButton {
         margin-bottom: 0;
     }
+
+
+
+}
+
+
+@media (max-width: 820px) {
+
+    @keyframes slideUpAndFade {
+        from {
+            opacity: 0;
+            transform: translateY(2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideRightAndFade {
+        from {
+            opacity: 0;
+            transform: translateX(-2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+    @keyframes slideDownAndFade {
+        from {
+            opacity: 0;
+            transform: translateY(-2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slideLeftAndFade {
+        from {
+            opacity: 0;
+            transform: translateX(2px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+
+
+
+    #navbar {
+
+        padding-left: 0;
+
+        input{
+            width: 90%;
+        }
+
+        #mobileMenu {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            padding-inline: 2rem;
+        }
+
+
+        #mobileMenu div:first-child {
+            display: flex;
+            align-items: center;
+        }
+
+
+
+        .logo {
+            margin-right: 1rem;
+        }
+
+        svg {
+            color: $purple;
+        }
+
+        
+
+
+
+    }
+
+
+
+    .mobileMenuContent {
+        background-color: #000000cd;
+        border-radius: 5px;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        padding: 1rem;
+        border: 1px solid $purple;
+        word-break: break-all;
+        margin-right: 2rem;
+        margin-top: 1rem;
+
+        animation-duration: 400ms;
+        animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform, opacity;
+    }
+
+    .mobileMenuItem{
+        position: relative;
+    }
+
+    .mobileMenuContent[data-side='top'] {
+        animation-name: slideDownAndFade;
+    }
+
+    .mobileMenuContent[data-side='bottom'] {
+        animation-name: slideUpAndFade;
+    }
+
+    .mobileMenuContent[data-side='left'] {
+        animation-name: slideRightAndFade;
+    }
+
+    .mobileMenuContent[data-side='right'] {
+        animation-name: slideLeftAndFade;
+    }
+
+    a.mobileMenuItem {
+        color: #fff;
+        display: flex;
+        align-items: center;
+        min-width: 25rem;
+        max-width: 30rem;
+    }
+
+    #sidebar,
+    #desktopNavbarInput {
+        display: none;
+    }
+
+    .currentPageAndNavbarContainer {
+        width: 100vw;
+    }
+
+
 
 
 

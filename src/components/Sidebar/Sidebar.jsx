@@ -4,7 +4,7 @@ import useBoardContext from '../../hooks/useBoardContext';
 
 
 
-function Sidebar({ addBoardPopup, availableBoards: boards, setAvailableBoards }) {
+function Sidebar({ addBoardPopup, availableBoards: boards, deleteBoard }) {
 
 
     const { boardid } = useParams()
@@ -13,27 +13,7 @@ function Sidebar({ addBoardPopup, availableBoards: boards, setAvailableBoards })
 
     const { selectedBoard,setSelectedBoard } = useBoardContext()
 
-    const deleteBoard = () => {
-
-        const allStorageBoards = Object.keys(localStorage).map(boardid => {
-            const boardJSON = localStorage.getItem(boardid)
-            return JSON.parse(boardJSON)
-        })
-
-        const updatedBoards = allStorageBoards
-
-        const removedItemIndex = updatedBoards.findIndex(board => board.id == boardid)
-
-        updatedBoards.splice(removedItemIndex, 1)
-
-        localStorage.removeItem(selectedBoard.id)
-        setAvailableBoards(updatedBoards)
-
-
-        navigate('/')
-        setSelectedBoard(null)
-
-    }
+    
 
 
 
