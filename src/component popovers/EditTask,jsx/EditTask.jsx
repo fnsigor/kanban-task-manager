@@ -2,6 +2,8 @@ import React, { forwardRef, useEffect, useState } from 'react'
 import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
 import useBoardContext from '../../hooks/useBoardContext'
 import { updateBoard } from '../../utils/updateBoard'
+import * as Checkbox from '@radix-ui/react-checkbox';
+
 
 const EditTask = forwardRef(({ userid }, ref) => {
 
@@ -68,15 +70,16 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
 
     const handleCheckboxChange = (event, index) => {
-        const updatedSubtask = subtasks[index]
-        updatedSubtask.completed = event.target.checked
+
+       const updatedSubtask = subtasks[index]
+        updatedSubtask.completed = event
         setSubtasks(subtasks.map((subtask, i) => {
             if (index === i) {
                 return updatedSubtask
             } else {
                 return subtask
             }
-        }))
+        })) 
     }
 
     const deleteTask = () => {
@@ -125,7 +128,7 @@ const EditTask = forwardRef(({ userid }, ref) => {
 
             <div className='popupForm EditTask'>
 
-                <form >
+                <form autoComplete="off">
 
                     <div>
                         <input
@@ -146,23 +149,22 @@ const EditTask = forwardRef(({ userid }, ref) => {
                         ></textarea>
                     </div>
 
-
-
                     <div className='subtasksContainer'>
                         <label>Subtasks</label>
                         {
                             subtasks.map((subtask, index) => (
                                 <div key={subtask.id} className='subtasksDiv'>
-                                    <input
-                                        checked={subtask.completed}
-                                        type="checkbox"
-                                        name={subtask.id}
+                                    <Checkbox.Root
+                                        className="CheckboxRoot"
                                         id={subtask.id}
-                                        placeholder={subtask.name}
+                                        checked={subtask.completed}
+                                        onCheckedChange={(event) => handleCheckboxChange(event, index)}>
+                                        <Checkbox.Indicator className="CheckboxIndicator" asChild>
+                                        <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M11.4669 3.72684C11.7558 3.91574 11.8369 4.30308 11.648 4.59198L7.39799 11.092C7.29783 11.2452 7.13556 11.3467 6.95402 11.3699C6.77247 11.3931 6.58989 11.3355 6.45446 11.2124L3.70446 8.71241C3.44905 8.48022 3.43023 8.08494 3.66242 7.82953C3.89461 7.57412 4.28989 7.55529 4.5453 7.78749L6.75292 9.79441L10.6018 3.90792C10.7907 3.61902 11.178 3.53795 11.4669 3.72684Z" fill="#FFFFFF" fillRule="evenodd" clipRule="evenodd"></path></svg>
+                                        </Checkbox.Indicator>
+                                    </Checkbox.Root>
 
-                                        onChange={(event) => handleCheckboxChange(event, index)}
 
-                                    />
                                     <label htmlFor={subtask.id}>{subtask.name}</label>
 
                                     <img title='Delete subtask' onClick={() => deleteSubtask(subtask.id)} src="./icon-close.svg" />

@@ -113,7 +113,7 @@ const AddBoard = forwardRef(({ setAvailableBoards, availableBoards }, ref) => {
         }} >
             <div className='popupForm'>
                 <h4>Create New Board</h4>
-                <form onSubmit={handleSubmit(() => createBoardSubmit())}>
+                <form autoComplete="off" onSubmit={handleSubmit(() => createBoardSubmit())}>
 
                     <div>
                         <label htmlFor="boardname">Board Name</label>
@@ -196,8 +196,8 @@ const AddBoard = forwardRef(({ setAvailableBoards, availableBoards }, ref) => {
                 </form>
 
                 <button className="redButton large" onClick={() => {
-                    ref.current.classList.toggle('show')
                     resetForm()
+                    ref.current.classList.toggle('show')
                 }}>
                     Close
                 </button>

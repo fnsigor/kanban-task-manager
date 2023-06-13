@@ -531,24 +531,33 @@ img[src="./icon-close.svg"] {
         border-radius: 5px;
 
         &:focus {
-            // outline: 1px solid $purple;
             background-color: #5656563c;
         }
 
     }
 
-    input[type='checkbox']:checked+label {
-        text-decoration: line-through;
-        color: darken(#fff, 50%);
-    }
-
-    input[type='checkbox'] {
-        height: 25px;
+  
+    .CheckboxRoot {
+        background-color: $component-gray;
         width: 25px;
+        height: 25px;
+        border-radius: 4px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         outline: none;
         cursor: pointer;
-        margin-right: 5px;
-    }
+      }
+
+      .CheckboxRoot[data-state="checked"]{
+        background-color: $purple;
+      }
+
+      .CheckboxRoot svg{
+        width: 25px;
+        height: 20px;
+      }
+
 
     .subtasksContainer div:not(.subtasksContainer div:last-child) {
         margin-bottom: 1rem
@@ -557,11 +566,13 @@ img[src="./icon-close.svg"] {
 
     .subtasksDiv {
         @include useFlex;
-        justify-content: flex-end;
+        justify-content: space-between;
+
         width: 100%;
         background-color: $dark-bg;
         border-radius: 5px;
-        padding: 1rem .5rem;
+        padding: 1rem;
+        padding-right: .3rem;
     }
 
     .subtasksDiv label {
@@ -582,6 +593,7 @@ img[src="./icon-close.svg"] {
         margin-bottom: 0;
     }
 
+   
 
 
 }
@@ -823,11 +835,5 @@ img[src="./icon-close.svg"] {
 
 
     }
-
-
-
-
-
-
 
 }
