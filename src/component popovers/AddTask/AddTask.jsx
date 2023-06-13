@@ -251,29 +251,8 @@ const AddTask = forwardRef(({ visible }, ref) => {
                     <div className=''>
                         <label htmlFor="board">Select column</label>
 
-                        {/* {availableColumns && (
-                            <select
-                                required
-                                name="board"
-                                id="board"
-                                onChange={e => setSelectedColumn(e.target.value)}
-                                defaultValue='select a column'
-                            >
-
-                                {availableColumns.map((column, i) => (
-                                    column.id == selectedColumn
-                                        ? (<option key={column.id} value={column.id} selected>
-                                            {column.name}
-                                        </option>)
-
-                                        : (<option key={column.id} value={column.id}>
-                                            {column.name}
-                                        </option>)
-                                ))}
-
-                            </select>
-                        )} */}
-                        <Select.Root>
+                        {availableColumns && (
+                            <Select.Root>
                             <Select.Trigger className="SelectTrigger" aria-label="Food">
                                 <Select.Value placeholder='chose ' />
                                 <Select.Icon className="SelectIcon">
@@ -305,6 +284,8 @@ const AddTask = forwardRef(({ visible }, ref) => {
                                 </Select.Content>
                             </Select.Portal>
                         </Select.Root>
+                        )}
+                       
 
 
                     </div>
