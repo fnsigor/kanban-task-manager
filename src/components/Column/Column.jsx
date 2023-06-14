@@ -104,7 +104,6 @@ function Column({ name, tasks, columnId, columnindex }) {
 						setSelectedColumn(columnId)
 						setNewTaskName(taskNameInputValue)
 						addTaskPopup.current.classList.toggle('show')
-						console.log('abriu popup')
 					}}
 				>
 					Create Task

@@ -5,6 +5,7 @@ import { getUserBoards } from '../../utils/getBoard';
 import useBoardContext from '../../hooks/useBoardContext';
 import { DragDropContext, Droppable } from 'react-beautiful-dnd';
 import { CreateColumnInput } from '../../components/CreateColumnInput/CreateColumnInput';
+import useColumnContext from '../../hooks/useColumnContext';
 
 function CurrentBoard() {
 
@@ -52,11 +53,10 @@ function CurrentBoard() {
                 id: selectedBoard.id,
                 columns: updatedColumns
             }
-
             localStorage.setItem(updatedBoard.id, JSON.stringify(updatedBoard))
 
 
-        } else {
+        } else {//COLUMN DND
             const updatedColumns = selectedBoard.columns
             const [reorderedItem] = selectedBoard.columns.splice(result.source.index, 1);
             updatedColumns.splice(result.destination.index, 0, reorderedItem);
