@@ -140,7 +140,13 @@ function Column({ name, tasks, columnId, columnindex }) {
 						{(provided) => (
 							<ul {...provided.droppableProps} ref={provided.innerRef} className='taskList'>
 								{tasks.map((task, index) => (
-									<Task task={task} key={task.id} toggleClass={toggleClass} columnId={columnId} index={index} />
+									<Task 
+									task={task}
+									 key={task.id + 'task'}  
+									 toggleClass={toggleClass} 
+									 columnId={columnId}
+									  index={index}
+									  columnindex={columnindex} />
 								))}
 
 								{provided.placeholder}

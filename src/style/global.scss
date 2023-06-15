@@ -159,6 +159,7 @@ img[src="./icon-close.svg"] {
     background-color: $transparent-bg;
 
     height: fit-content;
+    max-height: 100%;
 
     width: 30rem;
     padding: 2rem;
@@ -651,6 +652,10 @@ img[src="./icon-close.svg"] {
 
 @media (max-width: 820px) {
 
+    
+    
+
+
     @keyframes slideUpAndFade {
         from {
             opacity: 0;
@@ -699,6 +704,28 @@ img[src="./icon-close.svg"] {
         }
     }
 
+
+    #currentBoard{
+        &::-webkit-scrollbar {
+            height: 15px;
+        }
+    
+        &::-webkit-scrollbar-track {
+            background: #000000a5;
+            margin-bottom: 1rem;
+        }
+    
+        /* Handle */
+        &::-webkit-scrollbar-thumb {
+            background: $purple;
+            border-radius: 3px;
+        }
+    
+    
+        &::-webkit-scrollbar-thumb:hover {
+            background: darken($purple, 20%);
+        }
+    }
 
 
     #navbar {

@@ -145,7 +145,7 @@ const AddTask = forwardRef(({ visible }, ref) => {
     useEffect(() => {
         setAvailableColumns(selectedBoard?.columns ?? [])
     }, [selectedBoard])
-    
+
 
 
 
@@ -289,11 +289,7 @@ const AddTask = forwardRef(({ visible }, ref) => {
 
                                             {availableColumns.map((column, i) => (
 
-                                                column.id == selectedColumn
-                                                    ? (<SelectItem key={column.id} value={column.id} data-state="checked">
-                                                        {column.name}
-                                                    </SelectItem>)
-                                                    : (<SelectItem key={column.id} value={column.id}>
+                                                    (<SelectItem key={column.id} value={column.id}>
                                                         {column.name}
                                                     </SelectItem>)
 

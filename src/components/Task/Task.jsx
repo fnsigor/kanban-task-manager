@@ -4,7 +4,7 @@ import useColumnContext from '../../hooks/useColumnContext';
 import useSelectedTaskContext from '../../hooks/useSelectedTaskContext'
 import { Draggable } from 'react-beautiful-dnd';
 
-export function Task({ task, toggleClass, columnId, index }) {
+export function Task({ task, toggleClass, columnId, columnindex, index }) {
 
     const completedSubtasksNumber = task.subtasks.filter(subtask => subtask.completed === true).length
 
@@ -20,7 +20,7 @@ export function Task({ task, toggleClass, columnId, index }) {
             {(provided) => (
                 <li className='taskContainer'
                     onClick={() => {
-                        setSelectedTaskData({ ...task, columnId })
+                        setSelectedTaskData({ ...task, columnId, columnindex })
                         toggleClass()
                     }}
                     ref={provided.innerRef}
