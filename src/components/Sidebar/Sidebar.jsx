@@ -47,7 +47,7 @@ function Sidebar({ addBoardPopup, availableBoards: boards, deleteBoard }) {
                 </button>
 
                 {boardid && (
-                    <button className='redButton large' onClick={()=> deleteBoard(boardid, selectedBoard, setSelectedBoard)}>Excluir Board Atual <br />
+                    <button className='redButton large' onClick={()=> deleteBoard(boardid, selectedBoard, setSelectedBoard)}>Delete Current Board<br />
                         ({selectedBoard?.boardName})
                     </button>
                 )}
