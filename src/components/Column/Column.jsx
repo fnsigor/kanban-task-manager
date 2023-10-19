@@ -1,4 +1,4 @@
-import React, { useContext, useRef, useState, useEffect } from 'react'
+import React, { useContext, useRef, useState, useEffect, useMemo } from 'react'
 import { Task } from '../Task/Task'
 import useEditTaskHTML from '../../hooks/useEditTaskHTML'
 import useColumnContext from '../../hooks/useColumnContext'
@@ -24,7 +24,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 	}
 
 
-	const StrictModeDroppable = ({ children, ...props }) => {
+	const StrictModeDroppable = useMemo(() => ({ children, ...props }) => {
 		const [enabled, setEnabled] = useState(false);
 		useEffect(() => {
 			const animation = requestAnimationFrame(() => setEnabled(true));
@@ -37,7 +37,7 @@ function Column({ name, tasks, columnId, columnindex }) {
 			return null;
 		}
 		return <Droppable {...props}>{children}</Droppable>;
-	};
+	}, [boardid])
 
 
 	function ColumnTitle() {

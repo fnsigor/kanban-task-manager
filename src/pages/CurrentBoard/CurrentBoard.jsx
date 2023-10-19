@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom';
 import Column from '../../components/Column/Column';
 import { getUserBoards } from '../../utils/getBoard';
@@ -74,8 +74,10 @@ function CurrentBoard() {
     }
 
 
-    const DropzoneDroppable = ({ children, ...props }) => {
+    const DropzoneDroppable = useMemo(() => ({ children, ...props }) => {
+
         const [enabled, setEnabled] = useState(false);
+
         useEffect(() => {
             const animation = requestAnimationFrame(() => setEnabled(true));
             return () => {
@@ -86,8 +88,9 @@ function CurrentBoard() {
         if (!enabled) {
             return null;
         }
+        
         return <Droppable {...props}>{children}</Droppable>;
-    };
+    }, [boardid])
 
 
 
