@@ -4,7 +4,7 @@
 
 <!-- PROJECT MAIN IMAGE -->
 <div align="center">
-<img src="https://github.com/fnsigor/kanban-task-manager/assets/86209425/53bb10fe-ada9-4230-b36c-18855de1c880" width="80%" >
+<img src="https://github.com/fnsigor/kanban-task-manager/assets/86209425/31f6518e-e606-424d-9eea-9e6353f28c48" width="80%" >
 </div>
 
 
